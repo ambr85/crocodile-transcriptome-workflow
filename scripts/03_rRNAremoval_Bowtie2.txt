@@ -1,0 +1,11 @@
+#BOWTIE2 - rRNA Removal (SortMeRNA) (open in conda)
+
+##To open conda terminal type: source ~/anaconda3/bin/activate root
+##Once conda is activated [(base) will appear besides the directory] use conda activate bowtie2 to use the program. Once you are done, use conda deactivate to change program.
+##Set the directory properly and use the command below
+##Command to remove eukaryotic rRNA. PE sequences are mapped againts an rRNA reference and it is created as an output reading not aligned to rRNA. 
+##The resulting sequences are ready for mapping (COPY/PASTE the folder euk_rRNA (Silva rRNA sequences) in a folder "rRNARemoval" and create the directories 
+##for the samples and access in terminal to the target sample folder. Use the command then). 
+
+bowtie2 -x /your_directory/rRNAremoval/euk_rRNA/euk_rRNA -p 2 -1 SAMPLEt_1.fq.gz -2 SAMPLEt_2.fq.gz \
+    --un-conc-gz unmap_SAMPLE_R%.fq.gz --fr -I 0 -X 500 -S /dev/null
