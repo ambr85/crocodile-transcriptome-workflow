@@ -1,0 +1,19 @@
+#HTSEQ - COUNTINGS
+
+## After confirming strand specificity in RSeQC, modify this command accordingly:
+
+-s no ## no strand specificity (default in HTSeq) 
+-s yes ## strand forward 
+-s reverse ## strand reverse 
+
+## Be careful with this, as a wrong assignation may contribute to misinterpretation of counts (inflated or neglected).
+
+## INTRODUCE THE COMMAND LINE IN THE TERMINAL. 
+
+# IF NOT STRANDED:
+htseq-count -f bam -r pos -s no -t exon -i gene_id SAMPLENAME.bam your_genomic.gtf (EDIT ANNOTATION FILE) > SAMPLENAMEcount.out
+
+# IF STRANDED:
+htseq-count -f bam -r pos -s reverse -t exon -i gene_id SAMPLE.bam your_genomic.gtf > SAMPLEcount.out # REVERSE
+
+htseq-count -f bam -r pos -s yes -t exon -i gene_id SAMPLE.bam your_genomic.gtf > SAMPLEcount.out # FORWARD
