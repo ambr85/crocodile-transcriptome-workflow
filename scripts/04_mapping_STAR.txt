@@ -1,0 +1,29 @@
+#STAR - Creating the index
+
+##Index is ONLY CREATED ONCE. 
+##FASTA file of the genome of our target species is required. If the annotation file in GTF format is available, use it. 
+
+COMMAND WITH FASTA AND GTF FILE:
+STAR --runThreadN 4 --limitSjdbInsertNsj 300000 --limitGenomeGenerateRAM 10000000000 --genomeSAsparseD 3 --genomeSAindexNbases 12 --runMode genomeGenerate --genomeDir starindex
+--genomeFastaFiles starindex/your_genome.fna --sjdbGTFfile starindex/your_genome_annotation.gtf 
+
+COMMAND WITH FASTA AND GFF3 FILE:
+STAR --runThreadN 4 --limitSjdbInsertNsj 100000 --limitGenomeGenerateRAM=160595007072 --genomeSAsparseD 4 --genomeSAindexNbases 12 --runMode genomeGenerate --genomeDir starindex
+--genomeFastaFiles starindex/your_genome.fna --sjdbGTFfile starindex/your_genome_annotation.gff3 --sjdbGTFtagExonParentTranscript Parent --sjdbOverhang 149
+
+COMMAND ONLY FASTA:
+STAR --runThreadN 4 --limitSjdbInsertNsj 300000 --limitGenomeGenerateRAM 10000000000 --genomeSAsparseD 3 --genomeSAindexNbases 12 --runMode genomeGenerate --genomeDir starindex
+--genomeFastaFiles starindex/your_genome.fna 
+
+#If there is error with the limitGenomeGenerateRAM, use the RAM especified by the warning and write = (e.g. limitGenomeGenerateRAM=1000000000).
+
+#STAR - MAPPING
+
+###LINUX 
+##IN LINUX, READFILESCOMMAND WORKS WITH THE COMMAND ZCAT:
+STAR --genomeDir starindex --readFilesCommand zcat --readFilesIn SAMPLENAMEt_1.fq.gz SAMPLENAMEt_2.fq.gz --runThreadN 4 --outSAMtype BAM SortedByCoordinate
+
+##IN MAC OS, REPLACE READFILESCOMMAND FOR GZCAT:
+STAR --genomeDir starindex --readFilesCommand gzcat --readFilesIn SAMPLENAMEt_1.fq.gz SAMPLENAMEt_2.fq.gz --runThreadN 4 --outSAMtype BAM SortedByCoordinate
+
+###Replace "SortedByCoordinate" for the name of the sample.
