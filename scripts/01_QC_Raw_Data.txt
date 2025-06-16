@@ -1,0 +1,4 @@
+#FASTQC - RAW DATA
+#Get the report of raw data by using: 
+
+fastqc SAMPLEFILE_1.fq.gz SAMPLEFILE_2.fq.gz
