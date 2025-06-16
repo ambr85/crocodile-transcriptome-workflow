@@ -1,0 +1,41 @@
+#MAPQC - RSEQC AND QUALIMAP
+
+##To open conda terminal type: 
+
+source ~/anaconda3/bin/activate root
+
+##Once conda is activated [(base) will appear besides the directory] use conda activate and the name of environment to use the program. 
+##Once you are done, use: 
+
+conda deactivate 
+
+## to change program.
+
+###RSeQC
+##Step 1: Convert gtf/gff file to bed. Maked sure conda is activated. Select the directory with the gtf file (MapQC > RSeQC) and then convert the file. *This is only done once!! 
+	conda activate gxf2bed
+	gxf2bed -i your_genome.gtf(replace with your file) -o your_genome.bed (replace with your file)
+
+##Step 2: Create .bai files with samtools. Select the directory of your .bam file. Make sure conda is activated. Activate the environment samtools:
+	conda activate samtools
+	##Use then the command: 
+    samtools index *.bam (replace * for the name of the file)
+
+##Step 3: Select the path where the bed file and the bam bai files are allocated. Make sure conda is activated. Activate the RSeQC environment:
+	conda activate rseqc
+  infer_experiment.py -i *.bam -r your_genome.bed (REPLACE YOUR FILES)
+  **WE NEED TO CHECK HOW THE FILE IS STRANDED FOR HTSEQ! Depending on the results, strand in HTSeq is assigned as: -s no, -s yes (assign "yes" if it is forward), -s reverse
+
+##Step 4: Select the path where the bed file and the bam bai files are allocated. Make sure conda is activated. Activate the RSeQC environment:
+	## For one bam file: 
+      geneBody_coverage.py -r your_genome.bed(replace with your file) -i SAMPLE.bam -o SAMPLE (replace names of your files)
+	## For multiple bam files: 
+      geneBody_coverage.py -r your_genome.bed(replace with your file) -i SAMPLE1.bam,SAMPLE2.bam,SAMPLE3.bam -o AllSamples1
+  ## (add your files, replace names before extensions and separate with commas and no spaces) 
+
+###Qualimap
+#Depending on OS, open Qualimap. If using Mac or Linux, open the terminal, select the qualimap_v2.3 directory and copy this script: 
+
+./qualimap --java-mem-size=4G ##(This will open with RAM of 4G instead of default to allow very big BAM files to map)
+
+#Perform BAM QC and RNAseq QC in java interface.
