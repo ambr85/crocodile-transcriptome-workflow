@@ -34,8 +34,8 @@ Each folder corresponds to a pipeline step:
 - `05_Mapping_QC/`: Quality control of alignments
 - `06_Counts_HTSeq/`: Gene-level quantification
 - `07_DESeq2_Analysis/`: Differential expression and PCA
-- `08_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
-- `09_GSEA_Enrichment/`: Pathway and enrichment analysis
+- `09_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
+- `10_GSEA_Enrichment/`: Pathway and enrichment analysis
 
 ## ⚙️ Reproducibility
 
@@ -47,11 +47,34 @@ All scripts are annotated and modular. You can reproduce each step independently
 - **License**: MIT License – you may reuse and adapt the code with attribution.
 - **Status**: This repository is under development and will be made public upon manuscript acceptance.
 
-## 👩‍🔬 Author
+### 🧪 Additional Modules
+
+#### Midori Tool – Transcript Coverage QC
+
+This optional module performs transcript coverage quality checks using mapped BAM files and GTF annotations. It uses `bedtools`, `awk`, and `R` for normalization and visualization.
+
+📁 Directory: `08_Midori_QC/`  
+📄 Documentation: [`transcript_coverage_README.md`](./08_Midori_QC/README_Midori_Tool_transcript_coverage.md)
+
+**To run:**
+```bash
+Rscript coverage_analysis.R -g input.gtf -b input.bam -o output_plot.png
+
+## 👩‍🔬 Authors
 
 **Asela Marisol Buenfil-Rojas**  
 Center for Marine Environmental Studies (CMES) – Ehime University  
-Contact: [buenfil-rojas.am@outlook.com; ORCID 0000-0003-0999-7428]
+ORCID: [0000-0003-0999-7428](https://orcid.org/0000-0003-0999-7428)  
+Contact: buenfil-rojas.am@outlook.com
+
+**Mirella Kanerva**  
+Affiliation: [por confirmar]  
+ORCID: [0000-0002-2463-2497](https://orcid.org/0000-0002-2463-2497)
+
+**Midori Iida**  
+Kyushu Institute of Technology  
+ORCID: [0000-0002-5832-6148](https://orcid.org/0000-0002-5832-6148)
+
 
 ## 📖 Citation
 
