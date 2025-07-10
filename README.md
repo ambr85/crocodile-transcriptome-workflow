@@ -54,11 +54,13 @@ All scripts are annotated and modular. You can reproduce each step independently
 This optional module performs transcript coverage quality checks using mapped BAM files and GTF annotations. It uses `bedtools`, `awk`, and `R` for normalization and visualization.
 
 📁 Directory: `08_Midori_QC/`  
-📄 Documentation: [`transcript_coverage_README.md`](./08_Midori_QC/README_Midori_Tool_transcript_coverage.md)
+📄 Documentation: [`README_Midori_Tool_transcript_coverage.md`](./08_Midori_QC/README_Midori_Tool_transcript_coverage.md)
 
 **To run:**
-```bash
-Rscript coverage_analysis.R -g input.gtf -b input.bam -o output_plot.png
+
+```bash```
+
+```Rscript coverage_analysis.R -g input.gtf -b input.bam -o output_plot.png```
 
 ## 👩‍🔬 Authors
 
