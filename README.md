@@ -21,7 +21,7 @@ The aim of this project is to identify molecular biomarkers associated with envi
   - RSeQC
   - Qualimap
   - HTSeq
-  - DESeq2, mixOmics, clusterProfiler, GSEA, DAVID (R packages)
+  - DESeq2, mixOmics, clusterProfiler, GSEA (R packages)
 
 ## 📁 Folder Structure
 
