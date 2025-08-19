@@ -1,5 +1,5 @@
 # 🐊 Crocodile Transcriptome Workflow
-Transcriptomic analysis of Crocodylus moreletii. RNAseq, DESeq2 and MixOmics Workflow
+Transcriptomic analysis of *Crocodylus moreletii*. RNAseq, DESeq2 and MixOmics Workflow
 
 This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics with contaminant exposure data for biomarker discovery.
 
