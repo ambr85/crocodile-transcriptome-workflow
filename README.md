@@ -22,7 +22,12 @@ The aim of this project is to identify molecular biomarkers associated with envi
   - Qualimap
   - HTSeq
   - MultiQC
-  - DESeq2, mixOmics, clusterProfiler, GSEA (R packages)
+  - DESeq2 (R packages)
+  - GSEA (R packages)
+  - ClusterProfiler (R packages)
+  - CIA (Co-inertia Analysis) (R packages)
+  - MixOmics (R packages)
+
 
 ## 📁 Folder Structure
 
@@ -36,8 +41,9 @@ Each folder corresponds to a pipeline step:
 - `06_Counts_HTSeq/`: Gene-level quantification
 - `07_MultiQC_Summary_QC/`: Summarize analysis results for multiple tools and samples in a single report
 - `09_DESeq2_Analysis/`: Differential expression and PCA
-- `10_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
-- `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
+- `10_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
+- `11_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
+
 
 ## ⚙️ Reproducibility
 
