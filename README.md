@@ -23,6 +23,7 @@ The aim of this project is to identify molecular biomarkers associated with envi
   - HTSeq
   - MultiQC
   - DESeq2 (R packages)
+  - Gene Annotation (R packages)
   - GSEA (R packages)
   - ClusterProfiler (R packages)
   - CIA (Co-inertia Analysis) (R packages)
@@ -41,8 +42,9 @@ Each folder corresponds to a pipeline step:
 - `06_Counts_HTSeq/`: Gene-level quantification
 - `07_MultiQC_Summary_QC/`: Summarize analysis results for multiple tools and samples in a single report
 - `09_DESeq2_Analysis/`: Differential expression and PCA
-- `10_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
-- `11_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
+- `10_Gene_Annotation/`: Gene annotation including gene names, entrez id, ensembl id, go id and kegg id
+- `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
+- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
 
 
 ## ⚙️ Reproducibility
