@@ -21,6 +21,7 @@ The aim of this project is to identify molecular biomarkers associated with envi
   - RSeQC
   - Qualimap
   - HTSeq
+  - MultiQC
   - DESeq2, mixOmics, clusterProfiler, GSEA (R packages)
 
 ## 📁 Folder Structure
@@ -33,9 +34,10 @@ Each folder corresponds to a pipeline step:
 - `04_Mapping_STAR/`: STAR genome alignment
 - `05_Mapping_QC/`: Quality control of alignments
 - `06_Counts_HTSeq/`: Gene-level quantification
-- `07_DESeq2_Analysis/`: Differential expression and PCA
-- `09_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
-- `10_GSEA_Enrichment/`: Pathway and enrichment analysis
+- `07_MultiQC_Summary_QC/`: Summarize analysis results for multiple tools and samples in a single report
+- `09_DESeq2_Analysis/`: Differential expression and PCA
+- `10_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
+- `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
 
 ## ⚙️ Reproducibility
 
