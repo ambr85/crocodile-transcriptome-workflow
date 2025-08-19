@@ -22,6 +22,9 @@ This repository uses several bioinformatic tools and R packages. Below are the r
 - **HTSeq**  
   Anders, S., Pyl, P. T., & Huber, W. (2015). *HTSeq—a Python framework to work with high-throughput sequencing data*. Bioinformatics, 31(2), 166–169. doi:10.1093/bioinformatics/btu638
 
+- **MultiQC**  
+  Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). *MultiQC: Summarize analysis results for multiple tools and samples in a single report*. Bioinformatics, 32(19), 3047–3048. doi:10.1093/bioinformatics/btw354
+  
 - **Qualimap**  
   Okonechnikov, K., Conesa, A., & García-Alcalde, F. (2016). *Qualimap 2: advanced multi-sample quality control for high-throughput sequencing data*. Bioinformatics, 32(2), 292–294. doi:10.1093/bioinformatics/btv566
  
