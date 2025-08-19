@@ -100,8 +100,8 @@ sigC1_genes <- rownames(resC1)[
 ]
 
 # Save results
-write.csv(as.data.frame(resC1), file = "DESeq2_Results_REF_vs_S1.csv") #CH_vs_REF
-write.csv(as.data.frame(resC1[sigC1_genes, ]), file = "Significant_Genes_REFvsS1.csv") #Acá será CH cuando se haga REFvsCH
+write.csv(as.data.frame(resC1), file = "DESeq2_Results_REF_vs_S1.csv") #Site1_vs_REF
+write.csv(as.data.frame(resC1[sigC1_genes, ]), file = "Significant_Genes_REFvsS1.csv") #Significant genes REFvsSite1
 
 # --- REF vs S2 ---
 resC2 <- results(dds, contrast = c("condition", "REF", "S2"))
@@ -324,7 +324,7 @@ ggplot(resC1_df, aes(x = log2FoldChange, y = -log10(pvalue), color = Significant
        y = "-log10(p-value)") +
   theme_minimal()
 
-# Volcano plot for Site2 (EDITAR)
+# Volcano plot for Site2 (EDIT)
 
 resC2_df <- as.data.frame(resC2) %>%
   mutate(Gene = rownames(resC2),
