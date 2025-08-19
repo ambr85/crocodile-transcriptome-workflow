@@ -1,4 +1,4 @@
-MULTIQC 
+#MULTIQC 
 
 CREATE a new environment in conda: 
 
