@@ -1,4 +1,6 @@
 #FASTQC - RAW DATA
+#FASTQC is an interface software. It is only necessary to install it and then run the software, whether by bat interface in Windows or the direct access in MAC. Select the files to check and then save the report in the file QC_raw.
+
 #Get the report of raw data by using: 
 
 fastqc SAMPLEFILE_1.fq.gz SAMPLEFILE_2.fq.gz
