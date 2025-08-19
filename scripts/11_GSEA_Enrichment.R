@@ -1,9 +1,9 @@
 #############################################################
-#Programa:    GSEA & Cluster Profiler
-#Descripcion: Biological Pathways affected by GSEA and KEGG
-#Autor:       Marisol Buenfil Rojas
-#Fecha:       2025
-#Notas:       Example with 2 Sites
+#Programas:    GSEA & Cluster Profiler
+#Description:  Biological Pathways affected by GSEA and KEGG
+#Author:       Marisol Buenfil Rojas
+#Date:         2025
+#Notes:        Example with 2 Sites
 #############################################################
 
 library("ggplot2")
