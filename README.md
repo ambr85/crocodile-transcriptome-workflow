@@ -44,7 +44,7 @@ Each folder corresponds to a pipeline step:
 - `09_DESeq2_Analysis/`: Differential expression and PCA
 - `10_Gene_Annotation/`: Gene annotation including gene names, entrez id, ensembl id, go id and kegg id
 - `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
-- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This workflow will be included in the upcoming publication*.
+- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This workflow will be included in future publications*.
 
 
 ## ⚙️ Reproducibility
