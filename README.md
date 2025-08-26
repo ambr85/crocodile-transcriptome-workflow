@@ -5,7 +5,7 @@ This repository contains the bioinformatic pipeline used to process and analyze 
 
 ## 🔬 Project Overview
 
-The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), multiblock integration (mixOmics DIABLO & CIA), and functional enrichment (GSEA, GO/KEGG).
+The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), and multiblock integration (mixOmics DIABLO & CIA).
 
 ## 🖥️ System Requirements
 
@@ -44,7 +44,7 @@ Each folder corresponds to a pipeline step:
 - `09_DESeq2_Analysis/`: Differential expression and PCA
 - `10_Gene_Annotation/`: Gene annotation including gene names, entrez id, ensembl id, go id and kegg id
 - `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
-- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA)
+- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This workflow will be included in the upcoming publication*.
 
 
 ## ⚙️ Reproducibility
