@@ -62,12 +62,12 @@ sum(grepl("^LOC", rownames(rld_mat)))
 # ----------------------
 # 5. Extract DE results
 # ----------------------
-resC1 <- results(dds, contrast = c("condition", "REF", "S1"))
-resC2 <- results(dds, contrast = c("condition", "REF", "S2"))
+resC1 <- results(dds, contrast = c("condition", "S1", "REF"))
+resC2 <- results(dds, contrast = c("condition", "S2", "REF"))
 
 # Save results
-write.csv(as.data.frame(resC1), file = "DESeq2_Results_REF_vs_S1.csv")
-write.csv(as.data.frame(resC2), file = "DESeq2_Results_REF_vs_S2.csv")
+write.csv(as.data.frame(resC1), file = "DESeq2_Results_S1_vs_REF.csv")
+write.csv(as.data.frame(resC2), file = "DESeq2_Results_S2_vs_REF.csv")
 
 # For mixOmics:
 # Convert to data.frame and add the names of genes as first column
@@ -87,7 +87,7 @@ alpha <- 0.05
 lfc_threshold <- 1  # You can remove this line if you don’t want to filter by fold change
 
 # --- REF vs S1 ---
-resC1 <- results(dds, contrast = c("condition", "REF", "S1"))
+resC1 <- results(dds, contrast = c("condition", "S1", "REF"))
 resC1 <- resC1[order(resC1$padj), ]  
 summary(resC1)
 
@@ -100,11 +100,11 @@ sigC1_genes <- rownames(resC1)[
 ]
 
 # Save results
-write.csv(as.data.frame(resC1), file = "DESeq2_Results_REF_vs_S1.csv") #Site1_vs_REF
-write.csv(as.data.frame(resC1[sigC1_genes, ]), file = "Significant_Genes_REFvsS1.csv") #Significant genes REFvsSite1
+write.csv(as.data.frame(resC1), file = "DESeq2_Results_S1_vs_REF.csv") #Site1_vs_REF
+write.csv(as.data.frame(resC1[sigC1_genes, ]), file = "Significant_Genes_S1vsREF.csv") #Significant genes REFvsSite1
 
 # --- REF vs S2 ---
-resC2 <- results(dds, contrast = c("condition", "REF", "S2"))
+resC2 <- results(dds, contrast = c("condition", "S2", "REF"))
 resC2 <- resC2[order(resC2$padj), ]
 summary(resC2)
 
@@ -116,8 +116,8 @@ sigC2_genes <- rownames(resC2)[
   # Replace with: resC2$pvalue <= alpha  ← for exploratory plots if padj too strict
 ]
 
-write.csv(as.data.frame(resC2), file = "DESeq2_Results_REF_vs_S2.csv")
-write.csv(as.data.frame(resC2[sigC2_genes, ]), file = "Significant_Genes_REFvsS2.csv")
+write.csv(as.data.frame(resC2), file = "DESeq2_Results_S2_vs_REF.csv")
+write.csv(as.data.frame(resC2[sigC2_genes, ]), file = "Significant_Genes_S2vsREF.csv")
 
 # Optional: heatmap per set (editar)
 col.pan <- colorpanel(50, "blue", "white", "red")
@@ -127,8 +127,8 @@ rld <- rlog(dds, blind = TRUE)
 rld_mat <- assay(rld)
 
 # Select only the samples REF & Sites (cada uno)
-selected_samples_C1 <- colData(dds)$condition %in% c("REF", "S1")
-selected_samples_C2 <- colData(dds)$condition %in% c("REF", "S2")
+selected_samples_C1 <- colData(dds)$condition %in% c("S1", "REF")
+selected_samples_C2 <- colData(dds)$condition %in% c("S2", "REF")
 
 # Subset of the rlog matrix with the genes and the samples you want to check
 heat_data_C1 <- rld_mat[sigC1_genes, selected_samples_C1]
@@ -144,7 +144,7 @@ if (length(sigC1_genes) >= 2) {
             trace = "none", density = "none", scale = "row",
             col = col.pan, cexRow = 0.7, cexCol = 0.9,
             labCol = sampleLabels_C1,
-            main = "REF vs S1: DEGs")
+            main = "S1 vs REF: DEGs")
 }
 
 if (length(sigC2_genes) >= 2) {
@@ -152,7 +152,7 @@ if (length(sigC2_genes) >= 2) {
             trace = "none", density = "none", scale = "row",
             col = col.pan, cexRow = 0.7, cexCol = 0.9,
             labCol = sampleLabels_C2,
-            main = "REF vs S2: DEGs")
+            main = "S2 vs REF: DEGs")
 }
 
 #Explore the whole dataset (you can change padj to pvalue if too strict) (THIS IS IN CASE YOU DON'T DO THE SEPARATE HEATMAPS)
@@ -255,7 +255,7 @@ colsC1 <- densCols(resC1$log2FoldChange, -log10(resC1$pvalue))
 plot(resC1$log2FoldChange, -log10(resC1$padj),
      col = colsC1,
      panel.first = grid(),
-     main = "Volcano Plot - REF vs S1", #SiteX vs REF
+     main = "Volcano Plot - S1 vs REF", #SiteX vs REF
      xlab = "log2(Fold Change)",
      ylab = "-log10(p-adj)",
      pch = 20,
@@ -279,7 +279,7 @@ colsC2 <- densCols(resC2$log2FoldChange, -log10(resC2$pvalue))
 plot(resC2$log2FoldChange, -log10(resC2$padj),
      col = colsC2,
      panel.first = grid(),
-     main = "Volcano Plot - REF vs S2",
+     main = "Volcano Plot - S2 vs REF",
      xlab = "log2(Fold Change)",
      ylab = "-log10(p-adj)",
      pch = 20,
@@ -319,7 +319,7 @@ ggplot(resC1_df, aes(x = log2FoldChange, y = -log10(pvalue), color = Significant
   scale_color_manual(values = c("No" = "gray", "Yes" = "firebrick")) +
   geom_vline(xintercept = c(-lfc_threshold, lfc_threshold), color = "darkblue", linetype = "dashed") +
   geom_hline(yintercept = -log10(alpha), color = "darkblue", linetype = "dashed") +
-  labs(title = "Volcano Plot: REF vs S1", #Site1 vs REF
+  labs(title = "Volcano Plot: S1 vs REF", #Site1 vs REF
        x = "log2(Fold Change)",
        y = "-log10(p-value)") +
   theme_minimal()
@@ -340,7 +340,7 @@ ggplot(resC2_df, aes(x = log2FoldChange, y = -log10(pvalue), color = Significant
   scale_color_manual(values = c("No" = "gray", "Yes" = "firebrick")) +
   geom_vline(xintercept = c(-lfc_threshold, lfc_threshold), color = "darkblue", linetype = "dashed") +
   geom_hline(yintercept = -log10(alpha), color = "darkblue", linetype = "dashed") +
-  labs(title = "Volcano Plot: REF vs S2",
+  labs(title = "Volcano Plot: S2 vs REF",
        x = "log2(Fold Change)",
        y = "-log10(p-value)") +
   theme_minimal()
