@@ -2,8 +2,6 @@
 # PC1 loading-based enrichment analysis
 # Purpose: Interpret the biological meaning of PC1
 #          Clarify "What does PC1 represent? Structure? Stress? Metabolism?"
-# This script is for: 
-#   1. Extract PC1 loadings from PCA results
 ################################################################################
 
 # Required libraries
@@ -14,12 +12,16 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(enrichplot)
+library(cowplot)
+library(RColorBrewer)
+# library(biomaRt)
 
 #Load data
 directory <- "/YOUR_DIRECTORY"
 setwd(directory)
 getwd()
 
+### ====== STEP 1: Extract PC1 loadings from PCA results =======
 # ---- 1. Extract PC1 loadings ----
 # Get normalized data from DESeq2 object
 # (Assuming rlog/vst transformation is already done)
@@ -54,38 +56,24 @@ top_positive_genes <- head(pc1_loadings_df$gene, n_top)
 # Top negative loading genes (e.g., bottom 300 genes)
 top_negative_genes <- tail(pc1_loadings_df$gene, n_top)
 
-# dir.create("./Step2/results", showWarnings = FALSE, recursive = TRUE)
-# file.exists("./Step2/results")  # TRUE if exists
+# dir.create("./YOUR_DIRECTORY", showWarnings = FALSE, recursive = TRUE)
+# file.exists("./YOUR_DIRECTORY")  # TRUE if exists
 
-save(pc1_loadings_df,  file = "./Step2/results/pc1_loadings_df.dat")
-save(pc1_loadings_sorted, file = "./Step2/results/pc1_loadings_sorted.dat")
-save(top_positive_genes,  file = "./Step2/results/top_positive_genes.dat")
-save(top_negative_genes,  file = "./Step2/results/top_negative_genes.dat")
+save(pc1_loadings_df,  file = "./YOUR_DIRECTORY/pc1_loadings_df.dat")
+save(pc1_loadings_sorted, file = "./YOUR_DIRECTORY/pc1_loadings_sorted.dat")
+save(top_positive_genes,  file = "./YOUR_DIRECTORY/top_positive_genes.dat")
+save(top_negative_genes,  file = "./YOUR_DIRECTORY/top_negative_genes.dat")
 
 write.csv(pc1_loadings_df, 
-          "./Step2/results/PC1_loadings_all_genes.csv", 
+          "./YOUR_DIRECTORY/PC1_loadings_all_genes.csv", 
           row.names = FALSE)
 
-################################################################################
-# Fig.2A: PC1 loading-based enrichment analysis
-#This script is for:
-#  1.5 gene ID conversion for  
-################################################################################
-
-# Required libraries
-library(DESeq2)
-library(clusterProfiler)
-library(org.Hs.eg.db)  # or appropriate organism database
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(enrichplot)
-
+### ====== STEP 1.5: Conversion to database organism =======
 # ---- 3. Prepare gene ID conversion ----
 # If Alligator annotation is not available, conversion to human ortholog may be needed
 # Example: conversion from ENSEMBL ID to ENTREZ ID
 
-# load("./Step2/pc1_loadings_df.dat")
+# load("./YOUR_DIRECTORY/pc1_loadings_df.dat")
 
 # If gene IDs are in ENSEMBL format
 gene_ids <- pc1_loadings_df$gene
@@ -96,7 +84,6 @@ sym <- names(pc1_loadings_sorted)
 universe_genes <- pc1_loadings_df$gene
 
 # Convert to ENTREZID (adjust according to organism database)
-# library(biomaRt)
 # mart <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
 # gene_mapping <- getBM(
 #   attributes=c('ensembl_gene_id', 'entrezgene_id', 'external_gene_name'),
@@ -142,29 +129,15 @@ tmp <- split(as.numeric(vals), names(vals))
 pc1_entrez <- sapply(tmp, function(x) x[which.max(abs(x))])
 pc1_entrez <- sort(pc1_entrez, decreasing = TRUE)
 
-save(universe_genes, file = "./Step2/universe_genes.dat")
-save(top_positive_genes, file = "./Step2/top_positive_genes.dat")
-save(top_negative_genes, file = "./Step2/top_negative_genes.dat")
+save(universe_genes, file = "./YOUR_DIRECTORY/universe_genes.dat")
+save(top_positive_genes, file = "./YOUR_DIRECTORY/top_positive_genes.dat")
+save(top_negative_genes, file = "./YOUR_DIRECTORY/top_negative_genes.dat")
 
-################################################################################
-# Fig.2A: PC1 loading-based enrichment analysis
-#This script is for:
-#  2. Perform ORA (Over-Representation Analysis) using top/bottom loading genes
-################################################################################
-
-# Required libraries
-library(DESeq2)
-library(clusterProfiler)
-library(org.Hs.eg.db)  # or appropriate organism database
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(enrichplot)
-
+### ====== STEP 2: Perform ORA (Over-Representation Analysis) using top/bottom loading genes =======
 # ---- 0. load data -----------------------------
-load("./Step2/top_positive_genes.dat")
-load("./Step2/top_negative_genes.dat")
-load("./Step2/universe_genes.dat")
+load("./YOUR_DIRECTORY/top_positive_genes.dat")
+load("./YOUR_DIRECTORY/top_negative_genes.dat")
+load("./YOUR_DIRECTORY/universe_genes.dat")
 
 #universe_genes <- pc1_loadings_df$gene
 
@@ -217,43 +190,29 @@ ekegg_negative <- enrichKEGG(
   qvalueCutoff = 0.2
 )
 
-# ---- save data -----------------------------
-save(ego_positive, file = "./Step2/results/ego_positive.dat")
-save(ego_negative, file = "./Step2/results/ego_negative.dat")
-save(ekegg_positive, file = "./Step2/results/ekegg_positive.dat")
-save(ekegg_negative, file = "./Step2/results/ekegg_negative.dat")
+# ---- 0. Save data -----------------------------
+save(ego_positive, file = "./YOUR_DIRECTORY/ego_positive.dat")
+save(ego_negative, file = "./YOUR_DIRECTORY/ego_negative.dat")
+save(ekegg_positive, file = "./YOUR_DIRECTORY/ekegg_positive.dat")
+save(ekegg_negative, file = "./YOUR_DIRECTORY/ekegg_negative.dat")
 
 # ORA results
 write.csv(as.data.frame(ego_positive), 
-          "./Step2/results/PC1_ORA_GO_positive.csv", 
+          "./YOUR_DIRECTORY/PC1_ORA_GO_positive.csv", 
           row.names = FALSE)
 write.csv(as.data.frame(ego_negative), 
-          "./Step2/results//PC1_ORA_GO_negative.csv", 
+          "./YOUR_DIRECTORY/PC1_ORA_GO_negative.csv", 
           row.names = FALSE)
 write.csv(as.data.frame(ekegg_positive), 
-          "./Step2/results//PC1_ORA_KEGG_positive.csv", 
+          "./YOUR_DIRECTORY/PC1_ORA_KEGG_positive.csv", 
           row.names = FALSE)
 write.csv(as.data.frame(ekegg_negative), 
-          "./Step2/results//PC1_ORA_KEGG_negative.csv", 
+          "./YOUR_DIRECTORY/PC1_ORA_KEGG_negative.csv", 
           row.names = FALSE)
 
-################################################################################
-# Fig.2A: PC1 loading-based enrichment analysis
-#This script is for:
-#  3. Rank all genes by PC1 loading and perform GSEA
-################################################################################
-
-# Required libraries
-library(DESeq2)
-library(clusterProfiler)
-library(org.Hs.eg.db)  # or appropriate organism database
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(enrichplot)
-
+### ====== STEP 3: Rank all genes by PC1 loading and perform GSEA =======                     
 # ---- 0. load data -----------------------------
-load("./Step2/pc1_loadings_sorted.dat")
+load("./YOUR_DIRECTORY/pc1_loadings_sorted.dat")
 
 # ---- 5. GSEA (Gene Set Enrichment Analysis) ----
 # Rank all genes by PC1 loading values
@@ -284,36 +243,28 @@ gsea_kegg <- gseKEGG(
   eps           = 0
 )
 
-# ---- save data -----------------------------
-save(gsea_go, file = "./Step2/results/gsea_go.dat")
-save(gsea_kegg, file = "./Step2/results/gsea_kegg.dat")
+# ---- 0. Save data -----------------------------
+save(gsea_go, file = "./YOUR_DIRECTORY/gsea_go.dat")
+save(gsea_kegg, file = "./YOUR_DIRECTORY/gsea_kegg.dat")
 
 # GSEA results
 write.csv(as.data.frame(gsea_go), 
-          "./Step2/results/PC1_GSEA_GO.csv", 
+          "./YOUR_DIRECTORY/PC1_GSEA_GO.csv", 
           row.names = FALSE)
 write.csv(as.data.frame(gsea_kegg), 
-          "./Step2/results/PC1_GSEA_KEGG.csv", 
+          "./YOUR_DIRECTORY/PC1_GSEA_KEGG.csv", 
           row.names = FALSE)
 
-################################################################################
-# Fig.2A: Visualization of PC1 loading-based enrichment results
+### ====== STEP 4: Visualization of PC1 loading-based enrichment results =======
 # Purpose: Visualize enrichment results from PC1 analysis
 # Methods: 
 #   - Barplot/Dotplot for ORA results
 #   - Enrichment map
 #   - GSEA enrichment plot for top pathways
-################################################################################
-
-# Required libraries (if not already loaded)
-library(ggplot2)
-library(enrichplot)
-library(cowplot)
-library(RColorBrewer)
 
 # ----0. load data ---------------------
-load("./Step2/results/ego_positive.dat")
-load("./Step2/results/ego_negative.dat")
+load("./YOUR_DIRECTORY/ego_positive.dat")
+load("./YOUR_DIRECTORY/ego_negative.dat")
 
 # ---- 6. Barplot of ORA results (positive and negative) ----
 # GO enrichment for positive loading genes (top 10 terms)
@@ -334,37 +285,22 @@ p2 <- barplot(ego_negative,
   theme(axis.text = element_text(size = 10),
         plot.title = element_text(size = 12, face = "bold"))
 
-# ---- 7.plot Barplot of ORA results (positive and negative) ----
+# ---- 7. plot Barplot of ORA results (positive and negative) ----
 # Option 1: Arrange ORA barplots
 fig2a_v1 <- plot_grid(p1, p2, 
                       ncol = 1, 
                       labels = c("A", "B"),
                       label_size = 14)
 
-ggsave("./Step2/figures/Fig2A_PC1_enrichment_v1.pdf", 
+ggsave("./YOUR_DIRECTORY/Fig2A_PC1_enrichment_v1.pdf", 
        fig2a_v1, 
        width = 10, height = 12, 
        dpi = 300)
                      
-################################################################################
-# Fig.2A: Visualization of PC1 loading-based enrichment results
-# Purpose: Visualize enrichment results from PC1 analysis
-# Methods: 
-#   - Barplot/Dotplot for ORA results
-#   - Enrichment map
-#   - GSEA enrichment plot for top pathways
-################################################################################
-
-# Required libraries (if not already loaded)
-library(ggplot2)
-library(enrichplot)
-library(cowplot)
-library(RColorBrewer)
-
 # ----0. load data ---------------------
-load("./Step2/results/ego_positive.dat")
-load("./Step2/results/ego_negative.dat")
-load("./Step2/results/gsea_go.dat")
+load("./YOUR_DIRECTORY/ego_positive.dat")
+load("./YOUR_DIRECTORY/ego_negative.dat")
+load("./YOUR_DIRECTORY/gsea_go.dat")
 
 # ---- 8. Dotplot (more informative visualization) ----
 p3 <- dotplot(ego_positive, 
@@ -391,7 +327,7 @@ p7 <- dotplot(gsea_go,
   theme_classic() +
   theme(axis.text.y = element_text(size = 8))
 
-# ---- 9.plot Dotplot (more informative visualization) ----
+# ---- 9. plot Dotplot (more informative visualization) ----
 # Option 2: Dotplot + GSEA
 fig2a_v2 <- plot_grid(p3, p4, p7,
                       ncol = 1,
@@ -399,30 +335,15 @@ fig2a_v2 <- plot_grid(p3, p4, p7,
                       label_size = 9,
                       rel_heights = c(1, 1, 1.2))
 
-ggsave("./Step2/figures/Fig2A_PC1_enrichment_v2.pdf", 
+ggsave("./YOUR_DIRECTORY/Fig2A_PC1_enrichment_v2.pdf", 
        fig2a_v2, 
        width = 12, height = 24, 
        dpi = 300)
 
-################################################################################
-# Fig.2A: Visualization of PC1 loading-based enrichment results
-# Purpose: Visualize enrichment results from PC1 analysis
-# Methods: 
-#   - Barplot/Dotplot for ORA results
-#   - Enrichment map
-#   - GSEA enrichment plot for top pathways
-################################################################################
-
-# Required libraries (if not already loaded)
-library(ggplot2)
-library(enrichplot)
-library(cowplot)
-library(RColorBrewer)
-
 # ----0. load data ---------------------
-load("./Step2/results/ekegg_positive.dat")
-load("./Step2/results/ekegg_negative.dat")
-load("./Step2/results/gsea_go.dat")
+load("./YOUR_DIRECTORY/ekegg_positive.dat")
+load("./YOUR_DIRECTORY/ekegg_negative.dat")
+load("./YOUR_DIRECTORY/gsea_go.dat")
 
 # ---- 10. KEGG enrichment barplot ----
 if(nrow(as.data.frame(ekegg_positive)) > 0) {
@@ -457,30 +378,15 @@ fig2a_v3 <- plot_grid(p5, p6,
                       labels = c("A", "B"),
                       label_size = 14)
 
-ggsave("./Step2/figures/Fig2A_PC1_enrichment_v3.pdf", 
+ggsave("./YOUR_DIRECTORY/Fig2A_PC1_enrichment_v3.pdf", 
        fig2a_v3, 
        width = 14, height = 10, 
        dpi = 300)
 
-################################################################################
-# Fig.2A: Visualization of PC1 loading-based enrichment results
-# Purpose: Visualize enrichment results from PC1 analysis
-# Methods: 
-#   - Barplot/Dotplot for ORA results
-#   - Enrichment map
-#   - GSEA enrichment plot for top pathways
-################################################################################
-
-# Required libraries (if not already loaded)
-library(ggplot2)
-library(enrichplot)
-library(cowplot)
-library(RColorBrewer)
-
 # ----0. load data ---------------------
-load("./Step2/results/gsea_go.dat")
+load("./YOUR_DIRECTORY/gsea_go.dat")
 
-# 11. Enrichment plot for specific pathways
+# ---- 11. Enrichment plot for specific pathways ----
 # Example: ECM-related terms like "extracellular matrix organization"
 # Check term IDs
 gsea_go_df <- as.data.frame(gsea_go)
@@ -514,14 +420,14 @@ if(length(top_term_neg) > 0) {
 
 # Save individual GSEA plots
 if(exists("p8")) {
-  ggsave("./Step2/figures/Fig2A_GSEA_top_positive.pdf", 
+  ggsave("./YOUR_DIRECTORY/Fig2A_GSEA_top_positive.pdf", 
          p8, 
          width = 8, height = 6, 
          dpi = 300)
 }
 
 if(exists("p9")) {
-  ggsave("./Step2/figures/Fig2A_GSEA_top_negative.pdf", 
+  ggsave("./YOUR_DIRECTORY/Fig2A_GSEA_top_negative.pdf", 
          p9, 
          width = 9, height = 6, 
          dpi = 300)
