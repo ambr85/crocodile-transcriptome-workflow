@@ -1,10 +1,14 @@
 ################################################################################
-# Fig.3: WGCNA - Weighted Gene Co-expression Network Analysis
+# WGCNA - Weighted Gene Co-expression Network Analysis
 # Purpose: Separate "structural" and "stress" genes into distinct modules
 #          Confirm that structural and stress response genes operate as 
 #          separate modules in the co-expression network
 #This script is for:
 #   1. Select highly variable genes from rlog/vst expression data
+#   2. Estimate co-expression modules using WGCNA
+#   3. Calculate module eigengenes for each sample
+#   4. Annotate each module with GO/KEGG enrichment
+#   5. Evaluate relationship between modules and Farm vs Wild / PC1 scores
 ################################################################################
 
 # Required libraries
@@ -19,6 +23,7 @@ library(ggplot2)
 library(pheatmap)
 library(RColorBrewer)
 
+
 # Enable multi-threading for WGCNA (adjust based on your system)
 enableWGCNAThreads(nThreads = 4)
 
@@ -26,7 +31,7 @@ enableWGCNAThreads(nThreads = 4)
 #in_f <- "set path for your expression data"
 #rld <- get(load(in_f))
 
-#dds <- readRDS("dds_full.rds") #already loaded for Step 2 and in main directory
+#dds <- readRDS("dds_full.rds") #already loaded for PC1_loadings. Keep the rds in main directory
 
 # ---- 1. Prepare expression data for WGCNA ----
 # Get normalized expression data (rlog or vst transformed)
@@ -59,15 +64,15 @@ if (!gsg$allOK) {
     datExpr_filtered <- datExpr_filtered[gsg$goodSamples, ]
 }
 
-# ----- save data ---------------
-save(rld, file = "./Step4/results/rld.dat")
-save(datExpr_filtered, file = "./Step4/results/datExpr_filtered.dat")
+# ----- 3. Save data ---------------
+save(rld, file = "./YOUR_DIRECTORY/rld.dat")
+save(datExpr_filtered, file = "./YOUR_DIRECTORY/datExpr_filtered.dat")
 
-# ---- 3. Sample clustering to detect outliers ----
+# ---- 4. Sample clustering to detect outliers ----
 sampleTree <- hclust(dist(datExpr_filtered), method = "average")
 
 # Plot sample dendrogram
-pdf("./Step4/figures/WGCNA_sample_clustering.pdf", width = 12, height = 9)
+pdf("./YOUR_DIRECTORY/WGCNA_sample_clustering.pdf", width = 12, height = 9)
 par(cex = 0.6)
 par(mar = c(0, 4, 2, 0))
 plot(sampleTree, main = "Sample clustering to detect outliers", 
@@ -82,7 +87,7 @@ clust <- cutreeStatic(sampleTree, cutHeight = cutHeight, minSize = 2)
 keepSamples <- (clust == 1)
 datExpr_filtered <- datExpr_filtered[keepSamples, ]
 
-# ---- 4. Choose soft-thresholding power (beta) ----
+# ---- 5. Choose soft-thresholding power (beta) ----
 # Test different powers to find scale-free topology
 powers <- c(seq(1, 10, by = 1), seq(12, 20, by = 2))
 
@@ -92,7 +97,7 @@ sft <- pickSoftThreshold(datExpr_filtered,
                          verbose = 5)
 
 # Save soft threshold selection plot
-pdf("./Step4/figures/WGCNA_soft_threshold_selection.pdf", width = 12, height = 5)
+pdf("./YOUR_DIRECTORY/WGCNA_soft_threshold_selection.pdf", width = 12, height = 5)
 par(mfrow = c(1, 2))
 cex1 <- 0.9
 
@@ -126,31 +131,11 @@ if (is.na(softPower)) {
 }
 print(paste("Selected soft threshold power:", softPower))
 
-################################################################################
-# Fig.3: WGCNA - Weighted Gene Co-expression Network Analysis
-# Purpose: Separate "structural" and "stress" genes into distinct modules
-#          Confirm that structural and stress response genes operate as 
-#          separate modules in the co-expression network
-#This script is for:
-#   2. Estimate co-expression modules using WGCNA
-################################################################################
-
-# Required libraries
-library(WGCNA)
-library(DESeq2)
-library(clusterProfiler)
-library(org.Hs.eg.db)  # or appropriate organism database
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(pheatmap)
-library(RColorBrewer)
-
-# --- 0. load data ------------------------------
-load("./Step4/results/datExpr_filtered.dat")
+# --- 6. Load data ------------------------------
+load("./YOUR_DIRECTORY/datExpr_filtered.dat")
 softPower = 16 #select softPower
 
-# ---- 5. Construct network and detect modules (one-step approach) ----
+# ---- 7. Construct network and detect modules (one-step approach) ----
 # This uses automatic module detection with dynamic tree cut
 net <- blockwiseModules(
   datExpr_filtered,
@@ -163,7 +148,7 @@ net <- blockwiseModules(
   numericLabels = TRUE,
   pamRespectsDendro = FALSE,
   saveTOMs = TRUE,
-  saveTOMFileBase = "./Step4/results/WGCNA_TOM",
+  saveTOMFileBase = "./YOUR_DIRECTORY/WGCNA_TOM",
   verbose = 3,
   maxBlockSize = 10000          # Adjust based on RAM
 )
@@ -187,24 +172,15 @@ map_df    <- map_df[order(map_df$label), ]
 lut_label2color <- setNames(map_df$color, as.character(map_df$label))  # "1"->"brown"
 lut_color2label <- setNames(as.character(map_df$label), map_df$color)  # "brown"->"1"
 
-# ---- save -------------------------------------
-save(net, file = "./Step4/results/net.dat")
-save(moduleColors, file = "./Step4/results/moduleColors.dat")
+# ---- 8. Save -----------------
+save(net, file = "./YOUR_DIRECTORY/net.dat")
+save(moduleColors, file = "./YOUR_DIRECTORY/moduleColors.dat")
 
-################################################################################
-# Fig.3: WGCNA - Weighted Gene Co-expression Network Analysis
-# Purpose: Separate "structural" and "stress" genes into distinct modules
-#          Confirm that structural and stress response genes operate as 
-#          separate modules in the co-expression network
-#This script is for:
-#    3. Calculate module eigengenes for each sample
-################################################################################
-
-# --- 0. load data ------------------------------
-load("./Step4/results/rld.dat")
-load("./Step4/results/datExpr_filtered.dat")
-load("./Step4/results/net.dat")
-load("./Step4/results/moduleColors.dat")
+# --- 9. load data ------------------------------
+load("./YOUR_DIRECTORY/rld.dat")
+load("./YOUR_DIRECTORY/datExpr_filtered.dat")
+load("./YOUR_DIRECTORY/net.dat")
+load("./YOUR_DIRECTORY/moduleColors.dat")
 
 # Create binary condition (farm/wild) and site (before in condition in the original metadata)
 
@@ -219,7 +195,7 @@ colData(rld)$condition <- factor(
   levels = c("Farm","Wild")
 )
 
-# ---- 6. Calculate module eigengenes (MEs) ----
+# ---- 10. Calculate module eigengenes (MEs) ----
 MEs <- net$MEs
 MEs <- orderMEs(MEs)  # Order by hierarchical clustering
 
@@ -240,7 +216,7 @@ sample_info <- data.frame(
 
 MEs_with_info <- cbind(sample_info, MEs)
 
-# ---- 7. Correlate module eigengenes with traits ----
+# ---- 11. Correlate module eigengenes with traits ----
 # Create trait data (Farm = 1, Wild = 0)
 traitData <- data.frame(
   sample = sample_info$sample,
@@ -266,20 +242,11 @@ moduleTraitPvalue <- moduleTraitPvalue[mod_rows, , drop=FALSE]
 
 yLabs <- paste0("ME", mod_rows, " (", lut_label2color[mod_rows], ")")
 
-################################################################################
-# Fig.3: WGCNA - Weighted Gene Co-expression Network Analysis
-# Purpose: Separate "structural" and "stress" genes into distinct modules
-#          Confirm that structural and stress response genes operate as 
-#          separate modules in the co-expression network
-#This script is for:
-#   4. Annotate each module with GO/KEGG enrichment
-################################################################################
-
-# --- 0. load data ------------------------------
-load("./Step4/results/rld.dat")
-load("./Step4/results/datExpr_filtered.dat")
-load("./Step4/results/net.dat")
-load("./Step4/results/moduleColors.dat")
+# --- 12. load data ------------------------------
+load("./YOUR_DIRECTORY/rld.dat")
+load("./YOUR_DIRECTORY/datExpr_filtered.dat")
+load("./YOUR_DIRECTORY/net.dat")
+load("./YOUR_DIRECTORY/moduleColors.dat")
 
 # Helper: SYMBOL -> ENTREZID 
 sym2entrez <- function(sym_vec) {
@@ -298,7 +265,7 @@ sym2entrez <- function(sym_vec) {
 # Before the loop: universe in ENTREZ
 universe_entrez <- sym2entrez(colnames(datExpr_filtered))
 
-# ---- 8. Module annotation with GO/KEGG enrichment ----
+# ---- 13. Module annotation with GO/KEGG enrichment ----
 # Create list to store enrichment results
 module_enrichment <- list()
 
@@ -348,27 +315,18 @@ for (m in modules_num_keep) {
   # Save results
   if (!is.null(ego) && nrow(as.data.frame(ego)) > 0) {
     write.csv(as.data.frame(ego), 
-              paste0("./Step4/results/WGCNA_module_", m, "_GO.csv"),
+              paste0("./YOUR_DIRECTORY/WGCNA_module_", m, "_GO.csv"),
               row.names = FALSE)
   }
   
   if (!is.null(ekegg) && nrow(as.data.frame(ekegg)) > 0) {
     write.csv(as.data.frame(ekegg), 
-              paste0("./Step4/results/WGCNA_module_", m, "_KEGG.csv"),
+              paste0("./YOUR_DIRECTORY/WGCNA_module_", m, "_KEGG.csv"),
               row.names = FALSE)
   }
 }
 
-################################################################################
-# Fig.3: WGCNA - Weighted Gene Co-expression Network Analysis
-# Purpose: Separate "structural" and "stress" genes into distinct modules
-#          Confirm that structural and stress response genes operate as 
-#          separate modules in the co-expression network
-#This script is for:
-#   5. Evaluate relationship between modules and Farm vs Wild / PC1 scores
-################################################################################
-
-# ---- 9. Create summary table of module annotations ----
+# ---- 14. Create summary table of module annotations ----
 module_summary <- data.frame(
   module = modules_num_keep,
   n_genes = sapply(modules_num_keep, function(m) 
@@ -397,13 +355,13 @@ if ("PC1" %in% colnames(moduleTraitCor)) {
   module_summary$pval_PC1 <- moduleTraitPvalue[as.character(modules_num_keep), "PC1"]
 }
 
-# ---- 10. Save results ----
+# ---- 15. Save results ----
 write.csv(module_summary, 
-          "./Step4/results/WGCNA_module_summary.csv", 
+          "./YOUR_DIRECTORY/WGCNA_module_summary.csv", 
           row.names = FALSE)
 
 write.csv(MEs_with_info, 
-          "./Step4/results/WGCNA_module_eigengenes.csv", 
+          "./YOUR_DIRECTORY/WGCNA_module_eigengenes.csv", 
           row.names = FALSE)
 
 gene_assign <- data.frame(
@@ -412,17 +370,15 @@ gene_assign <- data.frame(
   module_color = moduleColors,
   stringsAsFactors = FALSE
 )
-write.csv(gene_assign, "./Step4/results/WGCNA_gene_module_assignment.csv", row.names = FALSE)
+write.csv(gene_assign, "./YOUR_DIRECTORY/WGCNA_gene_module_assignment.csv", row.names = FALSE)
 
 # Save workspace
 save(net, MEs, moduleColors, moduleLabels_num, 
      module_enrichment, module_summary,
-     file = "./Step4/results/WGCNA_results.RData")
+     file = "./YOUR_DIRECTORY/WGCNA_results.RData")
 
-print("Step 4 WGCNA analysis completed. Results saved in 'results/' directory.")
-
-  ################################################################################
-# Fig.3: Visualization of WGCNA results
+################################################################################
+# Visualization of WGCNA results
 # Purpose: Visualize co-expression modules and their relationships
 # Methods: 
 #   - Module dendrogram with color assignments
@@ -442,9 +398,9 @@ library(ComplexHeatmap)
 library(circlize)
 
 # Load WGCNA results if needed
-# load("./Step4/results/WGCNA_results.RData")
+# load("./YOUR_DIRECTORY/WGCNA_results.RData")
 
-# ---- 1. Module eigengene boxplots (Farm vs Wild comparison) ----
+# ---- 16. Module eigengene boxplots (Farm vs Wild comparison) ----
 # Prepare data for plotting
 MEs_long <- MEs_with_info %>%
   pivot_longer(
@@ -461,17 +417,6 @@ MEs_long$module_color <- unname(lut_label2color[MEs_long$module])
 
 # Label for the facet: "color (number)"
 MEs_long$module_label <- paste0(MEs_long$module_color, " (", MEs_long$module, ")")
-
-## Create column 'module_color' robust:
-##    - if 'module' is numeric (0,1,2,...) -> mape with labels2colors()
-##    - if is text: remove "ME" if exists; if only number is left -> map; if color is left -> use
-#MEs_long <- MEs_long %>%
-#  mutate(tmp = sub("^ME", "", module),
-#         module_color = case_when(
-#           grepl("^[0-9]+$", tmp) ~ labels2colors(as.numeric(tmp)),
-#           TRUE                   ~ tmp
-#         )) %>%
-#  select(-tmp)
 
 # Select modules significantly correlated with Farm vs Wild
 sig_modules <- module_summary %>%
@@ -501,11 +446,11 @@ p1 <- ggplot(MEs_sig, aes(x = condition, y = eigengene, fill = condition)) +
     legend.position = "bottom"
   )
 
-ggsave("./Step4/figures/Fig3A_module_eigengenes_farm_vs_wild.pdf",
+ggsave("./YOUR_DIRECTORY/Fig3A_module_eigengenes_farm_vs_wild.pdf",
        p1, width = 12, height = 10, dpi = 300)
 
-# ---- 2. Plot dendrogram with module colors ----
-pdf("./Step4/figures/Fig3A_WGCNA_dendrogram.pdf", width = 12, height = 6)
+# ---- 17. Plot dendrogram with module colors ----
+pdf("./YOUR_DIRECTORY/Fig3A_WGCNA_dendrogram.pdf", width = 12, height = 6)
 
 cols_block1 <- WGCNA::labels2colors(net$colors)[net$blockGenes[[1]]]
 
@@ -521,11 +466,11 @@ plotDendroAndColors(
 )
 dev.off()
 
-# ---- 3. Save figures ----
-ggsave("./Step4/figures/Fig3A_module_eigengenes_farm_vs_wild.pdf",
+# ---- 18. Save figures ----
+ggsave("./YOUR_DIRECTORY/Fig3A_module_eigengenes_farm_vs_wild.pdf",
        p1, width = 12, height = 10, dpi = 300)
 
-# ---- 4. Site-specific patterns (boxplots by site) ----
+# ---- 19. Site-specific patterns (boxplots by site) ----
 p2 <- ggplot(MEs_sig, aes(x = site, y = eigengene, fill = condition)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7) +
   geom_jitter(width = 0.2, alpha = 0.5, size = 1) +
@@ -544,10 +489,10 @@ p2 <- ggplot(MEs_sig, aes(x = site, y = eigengene, fill = condition)) +
     legend.position = "bottom"
   )
 
-ggsave("./Step4/figures/Fig3B_module_eigengenes_by_site.pdf",
+ggsave("./YOUR_DIRECTORY/Fig3B_module_eigengenes_by_site.pdf",
        p2, width = 14, height = 10, dpi = 300)
 
-# ---- 5. Module-trait relationship heatmap ----
+# ---- 20. Module-trait relationship heatmap ----
 # Prepare data for heatmap
 textMatrix <- paste(signif(moduleTraitCor, 2), "\n(",
                     signif(moduleTraitPvalue, 1), ")", sep = "")
@@ -557,7 +502,7 @@ module_ids   <- rownames(moduleTraitCor)              # "1","6","15",...,"0"
 module_cols  <- labels2colors(as.numeric(module_ids)) # color WGCNA of each id
 ylabs        <- paste0(module_ids, " (", module_cols, ")")
 
-pdf("./Step4/figures/Fig3B_module_trait_heatmap.pdf", width = 8, height = 10)
+pdf("./YOUR_DIRECTORY/Fig3B_module_trait_heatmap.pdf", width = 8, height = 10)
 par(mar = c(6, 8.5, 3, 3))
 labeledHeatmap(
   Matrix = moduleTraitCor,
@@ -574,7 +519,7 @@ labeledHeatmap(
 )
 dev.off()
 
-# ---- 6. Module eigengene correlation with PC1 ----
+# ---- 21. Module eigengene correlation with PC1 ----
 if ("PC1" %in% colnames(traitData)) {
   # Create scatter plots for key modules
   key_modules <- head(sig_modules, 6)
@@ -607,10 +552,10 @@ if ("PC1" %in% colnames(traitData)) {
     )
 }
 
-ggsave("./Step4/figures/Fig3C_module_eigengenes_vs_PC1.pdf",
+ggsave("./YOUR_DIRECTORY/Fig3C_module_eigengenes_vs_PC1.pdf",
        p3, width = 12, height = 8, dpi = 300)
 
-# ---- 7. Heatmap of module eigengenes ----
+# ---- 22. Heatmap of module eigengenes ----
 # Prepare annotation
 annotation_col <- data.frame(
   Condition = sample_info$condition,
@@ -645,12 +590,12 @@ p4 <- pheatmap(
   main = "Module eigengenes across all samples",
   fontsize = 10,
   fontsize_row = 8,
-  filename = "figures/Fig3D_module_eigengene_heatmap.pdf",
+  filename = "YOUR_DIRECTORY/Fig3D_module_eigengene_heatmap.pdf",
   width = 10,
   height = 8
 )
 
-# ---- 8. Module enrichment summary plot ----
+# ---- 23. Module enrichment summary plot ----
 # Extract top GO terms for each module
 module_go_summary <- lapply(sig_modules, function(mod) {
   ego <- module_enrichment[[mod]]$GO
@@ -693,36 +638,17 @@ if (nrow(module_go_df) > 0) {
 }
 
 if (exists("p5")) {
-  ggsave("./Step4/figures/Fig3E_module_GO_enrichment.pdf",
+  ggsave("./YOUR_DIRECTORY/Fig3E_module_GO_enrichment.pdf",
          p5, width = 10, height = 12, dpi = 300)
 }
 
-################################################################################
-# Fig.3: Visualization of WGCNA results
-# This script is to visualize modules that we considered priority based
-# on the category Farm vs Wild.
-################################################################################
-
-# Required libraries (if not already loaded)
-library(WGCNA)
-library(ggplot2)
-library(pheatmap)
-library(cowplot)
-library(reshape2)
-library(ComplexHeatmap)
-library(circlize)
-
-# Load WGCNA results if needed
-# load("./Step4/results/WGCNA_results.RData")
-
-# ---- 1. Prioritizing modules Farm/Wild ----
+# ---- 24. Prioritizing modules Farm/Wild ----
 
 mods_all <- sort(unique(moduleLabels))
-num2col  <- setNames(labels2colors(mods_all), mods_all)              # "11" -> "greenyellow"
+num2col  <- setNames(labels2colors(mods_all), mods_all)   # "11" -> "greenyellow"
 
-# ---- 2. Module eigengene boxplots (Farm vs Wild comparison) ----
+# ---- 25. Module eigengene boxplots (Farm vs Wild comparison) ----
 # Prepare data for plotting
-
 lut_label2color <- setNames(
   labels2colors(sort(unique(moduleLabels))),
   as.character(sort(unique(moduleLabels)))
@@ -752,7 +678,7 @@ MEs_sig <- dplyr::filter(MEs_long, module %in% sig_modules)
 p1 <- ggplot(MEs_sig, aes(x = condition, y = eigengene, fill = condition)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7) +
   geom_jitter(width = 0.2, alpha = 0.5, size = 1) +
-  facet_wrap(~ module_label, scales = "free_y", ncol = 3) +  # <-- cambiar aquí
+  facet_wrap(~ module_label, scales = "free_y", ncol = 3) +  
   scale_fill_manual(values = c("Farm" = "#E69F00", "Wild" = "#56B4E9")) +
   labs(
     title = "Module eigengenes: Farm vs Wild comparison",
@@ -767,11 +693,10 @@ p1 <- ggplot(MEs_sig, aes(x = condition, y = eigengene, fill = condition)) +
     legend.position = "bottom"
   )
 
-ggsave("./Step4/figures/Fig3A_module_eigengenes_farm_vs_wild(Prioritize).pdf",
+ggsave("./YOUR_DIRECTORY/Fig3A_module_eigengenes_farm_vs_wild(Prioritize).pdf",
        p1, width = 12, height = 10, dpi = 300)
 
-# ---- 3. Heatmap módulo+rasgo ----
-
+# ---- 26. Heatmap module+trait ----
 # Already generated:
 # MEs_long$module <- sub("^ME", "", as.character(MEs_long$module))
 # MEs_long$module_color <- unname(lut_label2color[MEs_long$module])
@@ -799,7 +724,7 @@ if ("pval_PC1" %in% colnames(module_summary)) {
   ord_df <- module_summary %>%
     dplyr::mutate(overlaps_PC1 = pval_PC1 < 0.05) %>%
     dplyr::filter(module %in% sig_modules) %>%
-    dplyr::arrange(overlaps_PC1,          # FALSE primero
+    dplyr::arrange(overlaps_PC1,          # FALSE first
                    pval_Farm_vs_Wild,
                    dplyr::desc(abs(cor_Farm_vs_Wild)),
                    dplyr::desc(n_genes))
@@ -823,13 +748,13 @@ MEs_sig$module_label <- factor(
   levels = paste0(unname(lut_label2color[sig_modules_top]), " (", sig_modules_top, ")")
 )
 
-# ---- 4. Site-specific patterns (boxplots by site) ----
+# ---- 27. Site-specific patterns (boxplots by site) ----
 p2 <- ggplot(MEs_sig,
-             aes(x = factor(site, levels = unique(sample_info$site)),  # <-- CHANGE
+             aes(x = factor(site, levels = unique(sample_info$site)),  
                  y = eigengene, fill = condition)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7) +
   geom_jitter(width = 0.2, alpha = 0.5, size = 1) +
-  facet_wrap(~ module_label, scales = "free_y", ncol = 3) +            # <-- CHANGE
+  facet_wrap(~ module_label, scales = "free_y", ncol = 3) +            
   scale_fill_manual(values = c("Farm" = "#E69F00", "Wild" = "#56B4E9")) +
   labs(
     title = "Module eigengenes by sampling site",
@@ -844,10 +769,10 @@ p2 <- ggplot(MEs_sig,
     legend.position = "bottom"
   )
 
-ggsave("./Step4/figures/Fig3B_module_eigengenes_by_site_(Prioritize).pdf",
+ggsave("./YOUR_DIRECTORY/Fig3B_module_eigengenes_by_site_(Prioritize).pdf",
        p2, width = 14, height = 10, dpi = 300)
 
-# ---- 5. Farm/Wild effect summary for key modules ----
+# ---- 28. Farm/Wild effect summary for key modules ----
 # Use the modules prioritized in the previous step
 key_modules <- as.character(sig_modules_top)
 
@@ -894,10 +819,10 @@ p3 <- ggplot(df_fw, aes(x = facet_label, y = cor_fw, fill = cor_fw)) +
     axis.title.x = element_text(margin = margin(t = 8))
   )
 
-ggsave("./Step4/figures/Fig3C_module_FarmWild_effect_summary.pdf",
+ggsave("./YOUR_DIRECTORY/Fig3C_module_FarmWild_effect_summary.pdf",
        p3, width = 8, height = 6, dpi = 300)
 
-# ---- 6. GO/KEGG enrichment por módulo ----
+# ---- 29. GO/KEGG enrichment por módulo ----
 # use the already defined:
 # module_enrichment (from your loop)
 # sig_modules        (all the significant FW)
@@ -947,11 +872,11 @@ if (nrow(module_go_df) > 0) {
     theme(strip.background = element_rect(fill = "white", color = "black"),
           strip.text = element_text(face = "bold"))
   
-  ggsave("./Step4/figures/Fig3E_module_GO_enrichment_FW.pdf",
+  ggsave("./YOUR_DIRECTORY/Fig3E_module_GO_enrichment_FW.pdf",
          p5, width = 10, height = 12, dpi = 300)
   
   # (optional) save the combined filtered table
-  readr::write_csv(module_go_df, "./Step4/results/WGCNA_GO_enrichment_FW_only.csv")
+  readr::write_csv(module_go_df, "./YOUR_DIRECTORY/WGCNA_GO_enrichment_FW_only.csv")
 }
 
 module_kegg_summary_fw <- lapply(sig_modules, function(mod) {
@@ -994,8 +919,8 @@ if (nrow(module_kegg_df) > 0) {
     theme(strip.background = element_rect(fill = "white", color = "black"),
           strip.text = element_text(face = "bold"))
   
-  ggsave("./Step4/figures/Fig3E_module_KEGG_enrichment_FW.pdf",
+  ggsave("./YOUR_DIRECTORY/Fig3E_module_KEGG_enrichment_FW.pdf",
          p5k, width = 10, height = 12, dpi = 300)
   
-  readr::write_csv(module_kegg_df, "./Step4/results/WGCNA_KEGG_enrichment_FW_only.csv")
+  readr::write_csv(module_kegg_df, "./YOUR_DIRECTORY/WGCNA_KEGG_enrichment_FW_only.csv")
 }
