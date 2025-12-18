@@ -126,7 +126,7 @@ write_gmt <- function(genesets, filename) {
   writeLines(unlist(gmt_lines), filename)
 }
 
-write_gmt(genesets_human, "./Step5/results/MSigDB_selected_genesets_human.gmt")
+write_gmt(genesets_human, "./YOUR_DIRECTORY/MSigDB_selected_genesets_human.gmt")
 
 # ======== Conversion Crocodile → Alligator → Human ortholog ===========
 # your data（Organism gene ID）
@@ -208,7 +208,7 @@ rownames_mapping <- setNames(
 
 rownames(expression_matrix_human) <- rownames_mapping[rownames(expression_matrix_human)]
 
-save(expression_matrix_human, file = "./Step5/results/expression_matrix_human.dat")
+save(expression_matrix_human, file = "./YOUR_DIRECTORY/expression_matrix_human.dat")
 
 ###########################################################################
 ### ALTERNATIVE TO CONVERSION (USED FOR OUR ANALYSIS) WITHOUT USING biomaRt
@@ -229,7 +229,7 @@ expression_matrix_human <- expr_sym |>
   as.matrix()
 
 # Save with the SAME name/route expected for your process
-save(expression_matrix_human, file = "./Step5/results/expression_matrix_human.dat")
+save(expression_matrix_human, file = "./YOUR_DIRECTORY/expression_matrix_human.dat")
 
 # ============== MAKE EXPRESSION PROFILE ====================
 # your data（Crocodile gene ID）
@@ -241,7 +241,7 @@ library(dplyr)
 library(tibble)
 
 # ------------- 0. Load data ------------------
-load("./Step5/results/expression_matrix_human.dat")
+load("./YOUR_DIRECTORY/expression_matrix_human.dat")
 
 # ------------- 3. Make expression matrix -----------------
 expression_matrix_human <- as.matrix(
@@ -272,7 +272,7 @@ print(sapply(genesets_filtered, length))
 # Check the final number of gene sets.
 cat("\nFinal number of gene sets:", length(genesets_filtered), "\n")
 
-save(genesets_filtered, file = "./Step5/results/genesets_filtered.dat")
+save(genesets_filtered, file = "./YOUR_DIRECTORY/genesets_filtered.dat")
 
 # ========== Running ssGSEA ====================
 #if (!require("BiocManager", quietly = TRUE))
@@ -286,8 +286,8 @@ set.seed(123)
 packageVersion("GSVA")
 
 # ------------- 0. Load data ------------------
-load("./Step5/results/expression_matrix_human.dat")
-load("./Step5/results/genesets_filtered.dat")
+load("./YOUR_DIRECTORY/expression_matrix_human.dat")
+load("./YOUR_DIRECTORY/genesets_filtered.dat")
 
 # ------------- 5. run ssGSEA ------------------
 x <- expression_matrix_human
@@ -312,12 +312,12 @@ cat("\n=== ssGSEA score summary ===\n")
 print(summary(as.vector(ssgsea_scores)))
 
 # ------------- 6. Save data ------------------
-write.csv(ssgsea_scores, "./Step5/results/ssGSEA_scores.csv")
+write.csv(ssgsea_scores, "./YOUR_DIRECTORY/ssGSEA_scores.csv")
 
 # ====== Group the gene sets by category (for visualization) ==========
 
 # ------------- 0. Load data ------------------
-load("./Step5/results/genesets_filtered.dat")
+load("./YOUR_DIRECTORY/genesets_filtered.dat")
  
 # ------------- 7. Classify the gene set into category ------------------
 geneset_categories <- data.frame(
@@ -350,7 +350,7 @@ cat("\n=== Category-level scores calculated ===\n")
 print(dim(ssgsea_by_category))
 
 # ------------- 9. Save data ------------------
-save(ssgsea_by_category, file = "./Step5/results/ssgsea_by_category.dat")
+save(ssgsea_by_category, file = "./YOUR_DIRECTORY/ssgsea_by_category.dat")
 
 # ======== Visualization by sites (ssGSEA score boxplot by sites) ========
 library(ggplot2)
@@ -359,7 +359,7 @@ library(dplyr)
 library(rstatix)
 
 # ------------- 0. Load data ------------------
-load("./Step5/results/ssgsea_scores")
+load("./YOUR_DIRECTORY/ssgsea_scores")
 
 # Prepare the metadata (adjust as needed for your dataset).
 # metadata: 
@@ -414,7 +414,7 @@ fig4a <- ggplot(ssgsea_category_long,
         strip.background = element_rect(fill = "gray90"),
         legend.position = "top")
 
-ggsave("./Step5/figures/Fig4A_ssGSEA_boxplot_by_site.pdf", fig4a, width = 12, height = 10)
+ggsave("./YOUR_DIRECTORY/Fig4A_ssGSEA_boxplot_by_site.pdf", fig4a, width = 12, height = 10)
 
 # ------------- 13. Statistical test (Farm vs Wild) ------------------
 stat_results <- ssgsea_category_long %>%
@@ -423,7 +423,7 @@ stat_results <- ssgsea_category_long %>%
   adjust_pvalue(method = "BH") %>%
   add_significance("p.adj")
 
-write.csv(stat_results, "./Step5/results/ssGSEA_category_statistics.csv", row.names = FALSE)
+write.csv(stat_results, "./YOUR_DIRECTORY/ssGSEA_category_statistics.csv", row.names = FALSE)
 
 cat("\n=== Statistical tests (Farm vs Wild) ===\n")
 print(stat_results)
@@ -438,7 +438,7 @@ library(circlize)
 library(RColorBrewer)
 
 # ------------- 0. Load data ------------------
-load("./Step5/results/ssgsea_scores")
+load("./YOUR_DIRECTORY/ssgsea_scores")
 # Prepare the metadata (adjust as needed for your dataset).
 # metadata: 
 # - Sample: sample name
@@ -518,7 +518,7 @@ fig4b <- Heatmap(
   )
 )
 
-pdf("./Step5/figures/Fig4B_ssGSEA_heatmap.pdf", width = 14, height = 10)
+pdf("./YOUR_DIRECTORY/Fig4B_ssGSEA_heatmap.pdf", width = 14, height = 10)
 draw(fig4b)
 dev.off()
 
@@ -603,7 +603,7 @@ if (exists("lut_label2color")) {
 stopifnot(identical(dim(moduleTraitCor_ssGSEA), dim(signif_labels_ssGSEA)))
 
 # ------------- 18. Module-ssGSEA correlation Heatmap ------------------
-pdf("./Step5/figures/Fig4C_Module_ssGSEA_correlation.pdf", width = 10, height = 8)
+pdf("./YOUR_DIRECTORY/Fig4C_Module_ssGSEA_correlation.pdf", width = 10, height = 8)
 
 labeledHeatmap(
   Matrix = moduleTraitCor_ssGSEA,
@@ -624,15 +624,15 @@ labeledHeatmap(
 dev.off()
 
 # Save files
-write.csv(moduleTraitCor_ssGSEA, "./Step5/results/Module_ssGSEA_correlation.csv")
-write.csv(moduleTraitPvalue_adj_ssGSEA, "./Step5/results/Module_ssGSEA_pvalue_adj.csv")
+write.csv(moduleTraitCor_ssGSEA, "./YOUR_DIRECTORY/Module_ssGSEA_correlation.csv")
+write.csv(moduleTraitPvalue_adj_ssGSEA, "./YOUR_DIRECTORY/Module_ssGSEA_pvalue_adj.csv")
 
 # ============ Correlation with WGCNA module eigengenes ============
 library(WGCNA)
 
 # ------------- 0. Load data ------------------
-#moduleTraitPvalue_adj_ssGSEA <- read.csv("./Step5/results/Module_ssGSEA_pvalue_adj.csv")
-#moduleTraitCor_ssGSEA <- read.csv("./Step5/results/Module_ssGSEA_correlation.csv")
+#moduleTraitPvalue_adj_ssGSEA <- read.csv("./YOUR_DIRECTORY/Module_ssGSEA_pvalue_adj.csv")
+#moduleTraitCor_ssGSEA <- read.csv("./YOUR_DIRECTORY/Module_ssGSEA_correlation.csv")
 
 # ------------- 19. Extract strong correlations ------------------
 # strong correlation（|r| > 0.6, padj < 0.05）
@@ -652,7 +652,7 @@ if (nrow(strong_correlations) > 0) {
     arrange(desc(abs(Correlation)))
   
   print(strong_cor_df)
-  write.csv(strong_cor_df, "./Step5/results/Strong_Module_ssGSEA_correlations.csv", row.names = FALSE)
+  write.csv(strong_cor_df, "./YOUR_DIRECTORY/Strong_Module_ssGSEA_correlations.csv", row.names = FALSE)
 }
 
 # ------------- 20. Make scatterplots of key modules and ssGSEA categories ------------------
@@ -682,7 +682,7 @@ if ("21" %in% colnames(MEs) && "ssGSEA_Xenobiotic/Detox" %in% colnames(ssgsea_tr
          y = "Xenobiotic/Detox ssGSEA score") +
     theme_bw(base_size = 12)
   
-  ggsave("./Step5/figures/Fig4D_Module_ssGSEA_scatter_example.pdf", fig4d, width = 7, height = 6)
+  ggsave("./YOUR_DIRECTORY/Fig4D_Module_ssGSEA_scatter_example.pdf", fig4d, width = 7, height = 6)
 }
 
 ###############################################
@@ -787,7 +787,7 @@ cat("Dim ssgsea_traits_subset:", dim(ssgsea_traits_subset), "\n")
 
 # Save the matrix of ssGSEA by category (including Xenobiotic/Detox)
 save(ssgsea_traits_subset,
-     file = "./Step5/results/ssgSEA_traits_by_category_with_Xeno.RData")
+     file = "./YOUR_DIRECTORY/ssgSEA_traits_by_category_with_Xeno.RData")
 
 # ------------- 4. Recompute module-trait correlations including Xenobiotic/Detox ------------------
 moduleTraitCor_ssGSEA <- cor(
@@ -814,7 +814,7 @@ signif_labels_ssGSEA <- ifelse(moduleTraitPvalue_adj_ssGSEA < 0.001, "***",
                                       ifelse(moduleTraitPvalue_adj_ssGSEA < 0.05,  "*",  "")))
 
 ## (Optional) heatmap WGCNA
-pdf("./Step5/figures/Fig5_Module_ssGSEA_with_Xeno.pdf", width = 8, height = 8)
+pdf("./YOUR_DIRECTORY/Fig5_Module_ssGSEA_with_Xeno.pdf", width = 8, height = 8)
 labeledHeatmap(
   Matrix     = moduleTraitCor_ssGSEA,
   xLabels    = colnames(ssgsea_traits_subset),
@@ -833,8 +833,8 @@ labeledHeatmap(
 dev.off()
 
 # Save data
-write.csv(moduleTraitCor_ssGSEA, "./Step5/results/Module_ssGSEA_correlation_Xeno.csv")
-write.csv(moduleTraitPvalue_adj_ssGSEA, "./Step5/results/Module_ssGSEA_pvalue_adj_Xeno.csv")
+write.csv(moduleTraitCor_ssGSEA, "./YOUR_DIRECTORY/Module_ssGSEA_correlation_Xeno.csv")
+write.csv(moduleTraitPvalue_adj_ssGSEA, "./YOUR_DIRECTORY/Module_ssGSEA_pvalue_adj_Xeno.csv")
 
 ### Extract strong correlations ########
 # strong correlation（|r| > 0.6, padj < 0.05）
@@ -854,7 +854,7 @@ if (nrow(strong_correlations) > 0) {
     arrange(desc(abs(Correlation)))
   
   print(strong_cor_df)
-  write.csv(strong_cor_df, "./Step5/results/Strong_Module_ssGSEA_correlations_Xeno.csv", row.names = FALSE)
+  write.csv(strong_cor_df, "./YOUR_DIRECTORY/Strong_Module_ssGSEA_correlations_Xeno.csv", row.names = FALSE)
 }
 
 # ------------- 5. Example scatter for a module vs Xenobiotic/Detox ------------------
@@ -895,7 +895,7 @@ if (mod_of_interest %in% colnames(MEs) &&
     ) +
     theme_bw(base_size = 12)
   
-  ggsave(paste0("./Step5/figures/Fig5_Module",
+  ggsave(paste0("./YOUR_DIRECTORY/Fig5_Module",
                 mod_of_interest, "_Xeno_ssGSEA_scatter.pdf"),
          fig_xeno, width = 7, height = 6)
 }
@@ -904,7 +904,7 @@ if (mod_of_interest %in% colnames(MEs) &&
 ### Create the category-level data (incl. Xenobiotic/Detox) ###
 
 # Load the matrix of the ssGSEA categories (samples x categories, with Xenobiotic)
-load("./Step5/results/ssgSEA_traits_by_category_with_Xeno.RData")
+load("./YOUR_DIRECTORY/ssgSEA_traits_by_category_with_Xeno.RData")
 # object: ssgsea_traits_subset
 
 ssgsea_category_long <- ssgsea_traits_subset %>%
@@ -940,7 +940,7 @@ fig4a <- ggplot(ssgsea_category_long,
         strip.background = element_rect(fill = "gray90"),
         legend.position = "top")
 
-ggsave("./Step5/figures/Fig4A_ssGSEA_boxplot_by_site_with_Xeno.pdf",
+ggsave("./YOUR_DIRECTORY/Fig4A_ssGSEA_boxplot_by_site_with_Xeno.pdf",
        fig4a, width = 12, height = 10)
 
 ########### Statistical test（Farm vs Wild, by category） #####################
@@ -952,7 +952,7 @@ stat_results <- ssgsea_category_long %>%
   add_significance("p.adj")
 
 write.csv(stat_results,
-          "./Step5/results/ssGSEA_category_statistics_with_Xeno.csv",
+          "./YOUR_DIRECTORY/ssGSEA_category_statistics_with_Xeno.csv",
           row.names = FALSE)
 
 cat("\n=== Statistical tests (Farm vs Wild; incl. Xenobiotic/Detox) ===\n")
