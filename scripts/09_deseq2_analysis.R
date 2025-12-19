@@ -53,7 +53,7 @@ dds <- DESeq(dds)
 # ----------------------
 # 4. rlog normalization
 # ----------------------
-rld <- rlog(dds, blind = TRUE)
+rld <- rlog(dds, blind = FALSE)
 rld_mat <- assay(rld)
 
 rld_mat_filtered <- rld_mat[!grepl("^LOC", rownames(rld_mat)), ]
