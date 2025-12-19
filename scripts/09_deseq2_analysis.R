@@ -122,6 +122,21 @@ write.csv(as.data.frame(resC2[sigC2_genes, ]), file = "Significant_Genes_S2vsREF
 # Optional: heatmap per set (editar)
 col.pan <- colorpanel(50, "blue", "white", "red")
 
+##--------TO MAKE DELTA (SITE) VS REF-----------
+#Calculate Delta vs CC (only once)
+cc_cols <- colData(dds)$condition == "CC"
+delta_vs_CC <- sweep(rld_mat, 1, rowMeans(rld_mat[, cc_cols, drop = FALSE]), "-")
+
+# Palette (white in 0)
+col.pan <- gplots::colorpanel(101, "blue", "white", "red")
+
+# helper for breaks around 0
+sym_breaks <- function(m, n = 102) {
+  z <- max(abs(range(m, finite = TRUE)))
+  seq(-z, z, length.out = n)  # n = length(col.pan)+1
+}
+##---------------------------------------
+
 # Create heatmap input from rlog data
 rld <- rlog(dds, blind = TRUE)
 rld_mat <- assay(rld)
@@ -134,7 +149,21 @@ selected_samples_C2 <- colData(dds)$condition %in% c("S2", "REF")
 heat_data_C1 <- rld_mat[sigC1_genes, selected_samples_C1]
 heat_data_C2 <- rld_mat[sigC2_genes, selected_samples_C2]
 
-# Etiquetas de condición para esas muestras
+##---------DELTA (SITE) VS REF SUBSET----------------
+heat_data_C1 <- delta_vs_CC[sigC1_genes, selected_samples_C1]
+heat_data_C2 <- delta_vs_CC[sigC2_genes, selected_samples_C2]
+
+# order by |log2FC|
+lfcC1 <- resC1[rownames(heat_data_C1), "log2FoldChange"]
+ordC1 <- order(abs(lfcC1), decreasing = TRUE, na.last = NA)
+heat_data_C1 <- heat_data_C1[ordC1, , drop = FALSE]
+
+lfcC2 <- resC2[rownames(heat_data_C2), "log2FoldChange"]
+ordC2 <- order(abs(lfcC2), decreasing = TRUE, na.last = NA)
+heat_data_C2 <- heat_data_C2[ordC2, , drop = FALSE]
+##-------------------------------------------
+
+# Condition labels for those samples
 sampleLabels_C1 <- colData(dds)$condition[selected_samples_C1]
 sampleLabels_C2 <- colData(dds)$condition[selected_samples_C2]
 
@@ -154,6 +183,25 @@ if (length(sigC2_genes) >= 2) {
             labCol = sampleLabels_C2,
             main = "S2 vs REF: DEGs")
 }
+
+##--------Heatmap USING DELTA VS REF
+if (length(sigC1_genes) >= 2) {
+  gplots::heatmap.2(as.matrix(heat_data_C1),
+            trace = "none", density = "none", scale = "none",
+            col = col.pan, breaks = sym_breaks(heat_data_C1),
+            cexRow = 0.7, cexCol = 0.9,
+            labCol = sampleLabels_C1,
+            ColSideColors = col_side_colors1,
+            margins = c(6,10),
+            key = TRUE, keysize = 1.0,
+            main = "DEGs S1 vs REF: Δ(rlog) vs REF")
+}
+
+legend("topright",
+       legend = names(group_colors1),
+       fill = group_colors1,
+       border = FALSE, bty = "n", cex = 0.8)
+##------------------------------------------------
 
 #Explore the whole dataset (you can change padj to pvalue if too strict) (THIS IS IN CASE YOU DON'T DO THE SEPARATE HEATMAPS)
 alpha <- 0.05
@@ -187,6 +235,33 @@ heatmap.2(as.matrix(heat_data),
           cexCol = 0.9,
           labCol = sampleLabels,
           main = "Heatmap of DEGs in Sites")
+
+#install.packages("dendextend")
+library(dendextend)
+
+# --- NEW: dendrograma de columnas y rotación (CC primero) ---
+mat_scaled <- t(scale(t(as.matrix(heat_data))))
+col_dend   <- as.dendrogram(hclust(dist(t(mat_scaled))))
+cc_cols    <- colnames(heat_data)[cond == "REF"]
+col_dend   <- rotate(col_dend, c(cc_cols, setdiff(colnames(heat_data), cc_cols)))
+
+##--------Heatmap UNION/INTERSECT USING DELTA VS REF
+gplots::heatmap.2(as.matrix(heat_data),
+                  trace = "none", density = "none", scale = "none",
+                  col = col.pan, breaks = sym_breaks(heat_data),
+                  cexRow = 0.7, cexCol = 0.9,
+                  labCol = lab,
+                  ColSideColors = col_side,
+                  margins = c(6,14),
+                  key = TRUE, keysize = 1.0,
+                  Rowv = TRUE,
+                  Colv = col_dend,
+                  dendogram = "both",
+                  main = paste0("Heatmap Union of DEGs (Δ vs CC) | genes: ", nrow(heat_data)))
+
+legend("topright", legend = names(group_colors),
+       fill = group_colors, border = FALSE, bty = "n", cex = 0.8, xpd=TRUE)
+##---------------------------------------------
 
 write.csv(as.data.frame(rld_mat[union_genes, ]), file = "Rlog_Transformed_Union_DEGs.csv")
 # write.csv(as.data.frame(rld_mat[intersect_genes, ]), file = "Rlog_Transformed_Intersect_DEGs.csv")
