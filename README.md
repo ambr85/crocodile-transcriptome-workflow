@@ -4,7 +4,7 @@ Transcriptomic analysis of *Crocodylus moreletii*. RNAseq, DESeq2 and MixOmics W
 This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics with contaminant exposure data for biomarker discovery.
 
 ## 🔬 Project Overview
-The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), Weighted Gene Co-expression Network Analysis (WGCNA), single-sample GSEA (ssGSEA) and biomarker selection by ML.
+The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), Weighted Gene Co-expression Network Analysis (WGCNA), single-sample GSEA (ssGSEA) and biomarker selection by machine learning (ML).
 
 ### Repository scope
 This repository contains the RNA-seq pipeline and scripts used for the transcriptomic analyses of *Crocodylus moreletii* (Publication 1).
@@ -47,8 +47,12 @@ Each folder corresponds to a pipeline step:
 - `07_MultiQC_Summary_QC/`: Summarize analysis results for multiple tools and samples in a single report
 - `09_DESeq2_Analysis/`: Differential expression and PCA
 - `10_Gene_Annotation/`: Gene annotation including gene names, entrez id, ensembl id, go id and kegg id
-- `11_GSEA_Enrichment/`: Pathway and KEGG enrichment analysis
-- `12_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This code will be added in future publications*.
+- `11_PC1_loading-based_enrich_analysis/`: Visualize the overall transcriptional structure and interpret the biological meaning of the first principal component (PC1)
+- `12_GSEA_KEGG-Enrichment_Supervised/`: Confirm the pathways of PC1 by doing supervised analysis between six sites (wild) and captive group
+- `13_WGCNA/`: Identify co-expressed gene modules using top variable genes
+- `14_ssGSEA/`: Assess individual-level activation of specific stress pathways and explore site-specific stress signatures
+- `15_Biomarker_Selection/`: Identify potential biomarker genes indicative of environmental stress by machine learning.
+- `16_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This code will be added in future publications*.
 
 
 ## ⚙️ Reproducibility
@@ -83,13 +87,13 @@ Center for Marine Environmental Studies (CMES) – Ehime University
 ORCID: [0000-0003-0999-7428](https://orcid.org/0000-0003-0999-7428)  
 Contact: buenfil-rojas.am@outlook.com
 
-**Mirella Kanerva**  
-Affiliation: [por confirmar]  
-ORCID: [0000-0002-2463-2497](https://orcid.org/0000-0002-2463-2497)
-
 **Midori Iida**  
 Kyushu Institute of Technology  
 ORCID: [0000-0002-5832-6148](https://orcid.org/0000-0002-5832-6148)
+
+**Mirella Kanerva**  
+Center for Marine Environmental Studies (CMES) - Ehime University  
+ORCID: [0000-0002-2463-2497](https://orcid.org/0000-0002-2463-2497)
 
 
 ## 📖 Citation
