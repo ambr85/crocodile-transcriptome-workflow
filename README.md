@@ -4,7 +4,7 @@ Transcriptomic analysis of *Crocodylus moreletii*. RNAseq, DESeq2 and MixOmics W
 This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics with contaminant exposure data for biomarker discovery.
 
 ## 🔬 Project Overview
-The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), and multiblock integration (mixOmics DIABLO & CIA).
+The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), Weighted Gene Co-expression Network Analysis (WGCNA), single-sample GSEA (ssGSEA) and biomarker selection by ML.
 
 ### Repository scope
 This repository contains the RNA-seq pipeline and scripts used for the transcriptomic analyses of *Crocodylus moreletii* (Publication 1).
@@ -30,8 +30,8 @@ This repository contains the RNA-seq pipeline and scripts used for the transcrip
   - Gene Annotation (R packages)
   - GSEA (R packages)
   - ClusterProfiler (R packages)
-  - CIA (Co-inertia Analysis) (R packages)
-  - MixOmics (R packages)
+  - WGCNA (R packages)
+  - ssGSEA (R packages)
 
 
 ## 📁 Folder Structure
