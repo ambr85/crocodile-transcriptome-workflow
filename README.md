@@ -52,7 +52,6 @@ Each folder corresponds to a pipeline step:
 - `13_WGCNA/`: Identify co-expressed gene modules using top variable genes
 - `14_ssGSEA/`: Assess individual-level activation of specific stress pathways and explore site-specific stress signatures
 - `15_Biomarker_Selection/`: Identify potential biomarker genes indicative of environmental stress by machine learning.
-- `16_mixOmics_CIA/`: Integration analyses (DIABLO, CIA) *This code will be added in future publications*.
 
 
 ## ⚙️ Reproducibility
