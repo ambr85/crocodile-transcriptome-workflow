@@ -1,6 +1,6 @@
-# 📚 Software Citations
+# 📚 Software References
 
-This repository uses several bioinformatic tools and R packages. Below are the recommended citations for each.
+This repository uses several bioinformatic tools and R packages. Below are the recommended references for each.
 
 ## 🔬 RNA-seq Preprocessing and Alignment
 
