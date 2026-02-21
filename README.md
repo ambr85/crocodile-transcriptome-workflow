@@ -1,5 +1,4 @@
-# 🐊 Crocodile Transcriptome Workflow
-Transcriptomic analysis of *Crocodylus moreletii*. 
+# 🐊 RNA-seq analysis workflow for non-lethal scute transcriptomics in *Crocodylus moreletii*
 
 This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics tools for biomarker discovery.
 
