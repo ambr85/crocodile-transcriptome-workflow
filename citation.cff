@@ -1,17 +1,17 @@
-cff-version: 1.0
+cff-version: 1.2.0
 title: "RNA-seq analysis workflow for non-lethal scute transcriptomics in Crocodylus moreletii"
 message: "If you use this workflow, please cite this repository and the associated article."
 type: software
 version: 1.0.0
-doi:
+doi: "10.0000/00000"
   authors:
-  - family-names: Buenfil-Rojas
-    given-names: Asela Marisol
-    orcid: https://orcid.org/0000-0003-0999-7428
-  - family-names: Iida
-    given-names: Midori
-  - family-names: Kanerva
-    given-names: Mirella
+  - family-names: "Buenfil-Rojas"
+    given-names: "Asela Marisol"
+    orcid: "https://orcid.org/0000-0003-0999-7428"
+  - family-names: "Iida"
+    given-names: "Midori"
+  - family-names: "Kanerva"
+    given-names: "Mirella"
 repository-code: "https://github.com/ambr85/crocodile-transcriptome-workflow"
 license: MIT
 date-released: 2026-02-21
@@ -19,22 +19,22 @@ preferred-citation:
   type: article
   title: "Non-lethal scute transcriptomics reveals biomarker candidates for environmental stress in Mexican Morelet’s crocodiles"
   authors:
-    - family-names: Buenfil-Rojas
-      given-names: Asela Marisol
-    - family-names: Iida
-      given-names: Midori
-    - family-names: González-Jáuregui
-      given-names: Mauricio
-    - family-names: Alvarez-Legorreta
-      given-names: Teresa
-    - family-names: Barão-Nóbrega
-      given-names: José António L.
-    - family-names: Kanerva
-      given-names: Mirella
-    - family-names: Ochiai
-      given-names: Mari
-    - family-names: Iwata
-      given-names: Hisato
-  journal: 
+    - family-names: "Buenfil-Rojas"
+      given-names: "Asela Marisol"
+    - family-names: "Iida"
+      given-names: "Midori"
+    - family-names: "González-Jáuregui"
+      given-names: "Mauricio"
+    - family-names: "Alvarez-Legorreta"
+      given-names: "Teresa"
+    - family-names: "Barão-Nóbrega"
+      given-names: "José António L."
+    - family-names: "Kanerva"
+      given-names: "Mirella"
+    - family-names: "Ochiai"
+      given-names: "Mari"
+    - family-names: "Iwata"
+      given-names: "Hisato"
+  journal: "Journal Title"
   year: 2026
-  doi: 
+  doi: "10.0000/00000"
