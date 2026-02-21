@@ -1,10 +1,10 @@
 # 🐊 Crocodile Transcriptome Workflow
-Transcriptomic analysis of *Crocodylus moreletii*. RNAseq, DESeq2 and MixOmics Workflow
+Transcriptomic analysis of *Crocodylus moreletii*. 
 
-This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics with contaminant exposure data for biomarker discovery.
+This repository contains the bioinformatic pipeline used to process and analyze RNA-seq data from *Crocodylus moreletii*, integrating transcriptomics tools for biomarker discovery.
 
 ## 🔬 Project Overview
-The aim of this project is to identify molecular biomarkers associated with environmental contaminants in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), Weighted Gene Co-expression Network Analysis (WGCNA), single-sample GSEA (ssGSEA) and biomarker selection by machine learning (ML).
+The aim of this project is to identify molecular biomarkers associated with environmental stress in wild populations of *C. moreletii*. The analysis includes quality control, mapping, differential expression (DESeq2), functional enrichment (GSEA, GO/KEGG), Weighted Gene Co-expression Network Analysis (WGCNA), single-sample GSEA (ssGSEA) and biomarker selection by machine learning (ML).
 
 ### Repository scope
 This repository contains the RNA-seq pipeline and scripts used for the transcriptomic analyses of *Crocodylus moreletii* (Publication 1).
