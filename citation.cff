@@ -3,7 +3,7 @@ title: "RNA-seq analysis workflow for non-lethal scute transcriptomics in Crocod
 message: "If you use this workflow, please cite this repository and the associated article."
 type: software
 version: 1.0.0
-doi: XXXXX/zenodoXXXXX
+doi:
   authors:
   - family-names: Buenfil-Rojas
     given-names: Asela Marisol
@@ -35,6 +35,6 @@ preferred-citation:
       given-names: Mari
     - family-names: Iwata
       given-names: Hisato
-  journal: XXXXXXX
+  journal: 
   year: 2026
-  doi: XX.XXXX/XXXXXX
+  doi: 
