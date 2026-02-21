@@ -96,4 +96,4 @@ ORCID: [0000-0002-2463-2497](https://orcid.org/0000-0002-2463-2497)
 
 ## 📖 Citation
 
-Once published, please cite the associated article and this repository DOI (via Zenodo).
+Once published, please cite the associated article and this repository DOI: 10.5281/zenodo.18724008 (via Zenodo).
