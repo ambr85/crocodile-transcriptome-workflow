@@ -5,7 +5,8 @@ This repository uses several bioinformatic tools and R packages. Below are the r
 ## 🔬 RNA-seq Preprocessing and Alignment
 
 - **FastQC**  
-  Andrews, S. (2010). *FastQC: a quality control tool for high throughput sequence data*. [https://www.bioinformatics.babraham.ac.uk/projects/fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc)
+  Andrews, S. (2010). *FastQC: a quality control tool for high throughput sequence data*.
+  [https://www.bioinformatics.babraham.ac.uk/projects/fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc)
 
 - **Trimmomatic**  
   Bolger, A. M., Lohse, M., & Usadel, B. (2014). *Trimmomatic: a flexible trimmer for Illumina sequence data*. Bioinformatics, 30(15), 2114–2120. doi:10.1093/bioinformatics/btu170
@@ -31,23 +32,50 @@ This repository uses several bioinformatic tools and R packages. Below are the r
 - **RSeQC**  
   Wang, L., Wang, S., & Li, W. (2012). *RSeQC: quality control of RNA-seq experiments*. Bioinformatics, 28(16), 2184–2185. doi:10.1093/bioinformatics/bts356
  
-## 📈 Differential Expression and Statistical Analysis
+## 📈 Differential Expression, Network Analysis and Biomarker Selection
 
 - **DESeq2**  
   Love, M. I., Huber, W., & Anders, S. (2014). *Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2*. Genome Biology, 15, 550. doi:10.1186/s13059-014-0550-8
 
-## 🔗 Multi-omics Integration
+- **WGCNA**  
+  Langfelder, P., Horvath, S. (2008). *WGCNA: an R package for weighted correlation network analysis*. BMC Bioinformatics, 559.
+doi:10.1186/1471-2105-9-559
 
-- **mixOmics / DIABLO**  
-  Singh, A., Shannon, C. P., Gautier, B., Rohart, F., Vacher, M., Tebbutt, S. J., & Lê Cao, K.-A. (2019). *DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays*. Bioinformatics, 35(17), 3055–3062. doi:10.1093/bioinformatics/bty1054
+  Langfelder, P., Horvath, S. (2012). *Fast R Functions for Robust Correlations and Hierarchical Clustering*. Journal of Statistical Software, 46(11), 1-17.
+  [https://www.jstatsoft.org/v46/i11].
+(https://www.jstatsoft.org/v46/i11).
+
+- **pROC**  
+  Robin, X., Turck, N., Hainard, A., Tiberti, N., Lisacek, F., Sanchez J.-C. Müller, M. (2011). *pROC: an open-source package for R and S+ to analyze and compare ROC curves*. BMC Bioinformatics, 12, 77.
+doi:10.1186/1471-2105-12-77
  
-- **Coinertia Analysis (CIA)**  
-  Dray, S., & Dufour, A.-B. (2007). *The ade4 package: implementing the duality diagram for ecologists*. Journal of Statistical Software, 22(4), 1–20.
+- **caret**  
+  Kuhn, M. (2008). *Building Predictive Models in R Using the caret Package*. Journal of Statistical Software, 28(5), 1–26.
+doi:10.18637/jss.v028.i05
+  
+- **glmnet**  
+  Friedman, J., Hastie, T., Tibshirani, R. (2010). *Regularization Paths for Generalized Linear Models via Coordinate Descent*. Journal of Statistical Software, 33(1), 1-22.
+doi:10.18637/jss.v033.i01
+
+  Tay, J.K., Narasimhan, B., Hastie, T. (2023). *Elastic Net Regularization Paths for All Generalized Linear Models*. Journal of Statistical Software, 106(1), 1-31. doi:10.18637/jss.v106.i01
 
 ## 🧬 Functional Enrichment
 
 - **clusterProfiler**  
   Yu, G., Wang, L. G., Han, Y., & He, Q. Y. (2012). *clusterProfiler: an R package for comparing biological themes among gene clusters*. OMICS, 16(5), 284–287. doi:10.1089/omi.2011.0118
+
+- **AnnotationDbi**  
+  Pagès, H., Carlson, M., Falcon, S., Li, N. (2024). *AnnotationDbi: Manipulation of SQLite-based annotations in Bioconductor*.
+doi:10.18129/B9.bioc.AnnotationDbi
+  
+- **GSVA**  
+  Hänzelmann, S., Castelo, R. and Guinney, A. (2013). *GSVA: gene set variation analysis for microarray and RNA-seq data*. BMC Bioinformatics, 14:7.
+doi:10.1186/1471-2105-14-7
+
+- **msigdbr**  
+  Dolgalev, I. (2025). *msigdbr: MSigDB Gene Sets for Multiple Organisms in a Tidy Data Format*. R package version 25.1.1
+  [https://CRAN.R-project.org/package=msigdbr]
+(https://CRAN.R-project.org/package=msigdbr)
 
 - **GSEA**  
   Korotkevich, G., Sukhov, V., & Sergushichev, A. (2019). *Fast gene set enrichment analysis*. bioRxiv. doi:10.1101/060012  
