@@ -42,7 +42,7 @@ This repository uses several bioinformatic tools and R packages. Below are the r
 doi:10.1186/1471-2105-9-559
 
   Langfelder, P., Horvath, S. (2012). *Fast R Functions for Robust Correlations and Hierarchical Clustering*. Journal of Statistical Software, 46(11), 1-17.
-  [https://www.jstatsoft.org/v46/i11](https://www.jstatsoft.org/v46/i11)]
+  [https://www.jstatsoft.org/v46/i11](https://www.jstatsoft.org/v46/i11)
   
 - **pROC**  
   Robin, X., Turck, N., Hainard, A., Tiberti, N., Lisacek, F., Sanchez J.-C. Müller, M. (2011). *pROC: an open-source package for R and S+ to analyze and compare ROC curves*. BMC Bioinformatics, 12, 77.
@@ -73,7 +73,7 @@ doi:10.1186/1471-2105-14-7
 
 - **msigdbr**  
   Dolgalev, I. (2025). *msigdbr: MSigDB Gene Sets for Multiple Organisms in a Tidy Data Format*. R package version 25.1.1
-  [[http://biorxiv.org/content/early/2016/06/20/060012](https://CRAN.R-project.org/package=msigdbr)
+  [http://biorxiv.org/content/early/2016/06/20/060012](https://CRAN.R-project.org/package=msigdbr)
   
 - **GSEA**  
   Korotkevich, G., Sukhov, V., & Sergushichev, A. (2019). *Fast gene set enrichment analysis*. bioRxiv. doi:10.1101/060012  
