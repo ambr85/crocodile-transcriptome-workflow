@@ -1,0 +1,29 @@
+Software and package versions used in the RNA-seq workflow and downstream analyses
+
+Command-line RNA-seq processing workflow:
+STAR 2.6.1a_08-27
+FastQC 0.12.1
+MultiQC 1.14
+Bowtie2 2.5.5
+Samtools 1.23
+HTSeq 2.1.2
+Qualimap 2.3
+Trimmomatic 0.40
+RSeQC 5.0.4
+Python 3.10.19
+Conda 24.11.3
+
+Downstream R/Bioconductor analyses:
+R 4.4.2
+DESeq2 1.46.0
+WGCNA 1.73
+clusterProfiler 4.15.0
+GSVA 2.0.7
+msigdbr 25.1.1
+pROC 1.19.0.1
+glmnet 4.1.10
+org.Hs.eg.db 3.20.0
+AnnotationDbi 1.68.0
+
+Note:
+The RNA-seq command-line workflow was executed in Unix-based environments configured via Anaconda and tested on Ubuntu and macOS. Downstream statistical analyses were performed in R using Bioconductor and CRAN packages listed above.
