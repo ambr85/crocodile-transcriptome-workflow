@@ -17,20 +17,23 @@ This repository contains the RNA-seq pipeline and scripts used for the transcrip
 - Python 3.x (for some wrapper scripts)
 - Conda (for managing tool environments)
 - Software:
-  - FastQC
-  - Trimmomatic
-  - Bowtie2
-  - STAR
-  - RSeQC
-  - Qualimap
-  - HTSeq
-  - MultiQC
-  - DESeq2 (R packages)
-  - Gene Annotation (R packages)
-  - GSEA (R packages)
-  - ClusterProfiler (R packages)
-  - WGCNA (R packages)
-  - ssGSEA (R packages)
+  - FastQC 0.12.1
+  - Trimmomatic 0.40
+  - Bowtie2 2.5.5
+  - STAR 2.6.1a_08-27
+  - RSeQC 5.0.4
+  - Qualimap 2.3
+  - HTSeq 2.1.2
+  - MultiQC 1.14
+  - DESeq2 1.46.0 (R packages)
+  - GSVA 2.0.7 (R packages)
+  - ClusterProfiler 4.15.0 (R packages)
+  - WGCNA 1.73 (R packages)
+  - msigdbr 25.1.1 (R packages)
+  - pROC 1.19.0.1 (R packages)
+  - glmnet 4.1.10 (R packages)
+  - org.Hs.eg.db 3.20.0 (R packages)
+  - AnnotationDbi 1.68.0 (R packages)
 
 
 ## 📁 Folder Structure
