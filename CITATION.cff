@@ -1,4 +1,4 @@
-cff-version: 1.2.0
+cff-version: 1.3.0
 title: "RNA-seq analysis workflow for non-lethal scute transcriptomics in Crocodylus moreletii"
 message: "If you use this workflow, please cite this repository and the associated article."
 type: software
@@ -37,4 +37,4 @@ preferred-citation:
       given-names: "Hisato"
   journal: "Journal Title"
   year: 2026
-  doi: "10.0000/00000"
+  doi: "10.1016/j.cbpc.2026.110661"
